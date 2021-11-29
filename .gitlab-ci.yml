@@ -6,10 +6,7 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
-test-job1:
-  rules:
-    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^feature/ && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
-      #when: never
+test-job1:only:master:
   stage: test
   script:
     - python -m unittest discover --verbose ."TestStringMethods.py"
