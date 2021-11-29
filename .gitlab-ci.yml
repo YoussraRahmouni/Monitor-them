@@ -9,7 +9,7 @@ build-job:
 test-job1:only:master:
   stage: test
   script:
-    - python -m unittest discover --verbose ."TestStringMethods.py"
+    - python -m unittest discover --verbose "TestStringMethods.py"
 
 deploy-prod:
   stage: deploy
