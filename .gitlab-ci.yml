@@ -6,8 +6,10 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
-test-job1:only:master:
+test-job1:
   stage: test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
     - python -m unittest discover --verbose ."TestStringMethods.py"
 
