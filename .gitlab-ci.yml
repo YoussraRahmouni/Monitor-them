@@ -11,7 +11,7 @@ test-job1:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
-    - python -m unittest discover --verbose ."TestStringMethods.py"
+    - python -m unittest discover --verbose "TestStringMethods.py"
 
 deploy-prod:
   stage: deploy
