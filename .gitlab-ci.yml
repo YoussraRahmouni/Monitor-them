@@ -4,6 +4,7 @@ default:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
+    - ip a
 test-job1:
   stage: test
   image: python:3.8-alpine
