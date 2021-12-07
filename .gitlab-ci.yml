@@ -2,6 +2,8 @@ default:
   image: python:3.8-alpine
   script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export https_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
 build-job:
   stage: build
   script:
@@ -12,6 +14,8 @@ test-job1:
   image: python:3.8-alpine
   script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export https_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - pip install paramiko
     - python -m unittest -v test/TestStringMethods.py
 
