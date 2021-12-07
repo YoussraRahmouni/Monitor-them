@@ -11,6 +11,7 @@ def sshcmd(hostname, port, username, password, command):
     output = stdout.read().decode("utf-8")
     for line in output.splitlines():
         print(line)
+    client.close()
     return output
 
 #sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "ifconfig -a")
