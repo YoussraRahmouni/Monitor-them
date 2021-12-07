@@ -16,7 +16,7 @@ test-job1:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
-    - yum install gcc libffi-devel python-devel openssl-devel -y
+    - sudo apt-get install python3-dev
     - pip install paramiko
     - python -m unittest -v test/TestStringMethods.py
 
