@@ -1,5 +1,5 @@
 import unittest
-from .. import script1
+from script1 import sshcmd
 
 class TestStringMethods(unittest.TestCase):
 
