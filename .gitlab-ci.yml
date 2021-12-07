@@ -10,12 +10,12 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 test-job1:
   stage: test
-  image: python:3.8-alpine
+  image: python:3.8
   script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
-    - apk add gcc musl-dev python3-dev py3-cffi libffi-dev
+    - apt install gcc musl-dev python3-dev py3-cffi libffi-dev
     - pip3 install paramiko
     - python3 -m unittest -v test/TestStringMethods.py
 
