@@ -10,7 +10,7 @@ build-job:
 test-job1:
   stage: test
   script:
-    - python -m unittest discover --verbose "TestStringMethods.py"
+    - python3 -m unittest discover --verbose "TestStringMethods.py"
 
 deploy-prod:
   stage: deploy
