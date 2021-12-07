@@ -1,6 +1,7 @@
 default:
   image: python:3.8-alpine
-
+  script:
+    - export http_proxy=http://cache.univ-st-etienne.fr:3128/
 build-job:
   stage: build
   script:
