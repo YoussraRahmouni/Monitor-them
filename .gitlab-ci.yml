@@ -8,14 +8,13 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
-before_script:
+test-job1:
+  stage: test
+  script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - pip install paramiko
-test-job1:
-  stage: test
-  script:
     - python3 -m unittest -v test/TestStringMethods.py
 
 deploy-prod:
