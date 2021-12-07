@@ -11,8 +11,8 @@ test-job1:
   stage: test
   image: python:3.8-alpine
   script:
-    - pip install paramiko
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - pip install paramiko
     - python -m unittest -v test/TestStringMethods.py
 
 deploy-prod:
