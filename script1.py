@@ -5,8 +5,8 @@ def sshcmd(hostname, port, username, password, command):
     client.load_system_host_keys()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
 
-    client.connect(hostname, port=port, username=username, password=password)
     print(hostname, port, username, password)
+    client.connect(hostname, port=port, username=username, password=password)
 
     _, stdout, stderr = client.exec_command(command)
     output = stdout.read().decode("utf-8")
