@@ -10,7 +10,8 @@ build-job:
 test-job1:
   stage: test
   script:
-    - python3 -m unittest discover --verbose "TestStringMethods.py"
+    - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - python -m unittest discover --verbose "TestStringMethods.py"
 
 deploy-prod:
   stage: deploy
