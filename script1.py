@@ -6,13 +6,13 @@ def sshcmd(hostname, port, username, password, command):
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
 
     print(hostname, port, username, password)
-    client.connect(hostname, port=port, username=username, password=password, timeout=500)
+    client.connect(hostname, port=port, username=username, password=password, timeout=1000)
 
     _, stdout, stderr = client.exec_command(command)
     output = stdout.read().decode("utf-8")
-    #for line in output.splitlines():
-    #    print(line)
-    #client.close()
+    for line in output.splitlines():
+        print(line)
+    client.close()
     return output
 
 #sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "ifconfig -a")
