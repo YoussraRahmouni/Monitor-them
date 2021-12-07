@@ -9,6 +9,7 @@ build-job:
 
 test-job1:
   stage: test
+  image: python:3.8-alpine
   script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - python -m unittest discover --verbose "TestStringMethods.py"
