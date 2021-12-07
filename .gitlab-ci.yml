@@ -15,8 +15,8 @@ test-job1:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
-    - apk add --no-cache --virtual .build-deps gcc musl-dev \ && pip install --no-cache-dir -r /code/requirements.txt \ && apk del .build-deps
-    - pip install paramiko
+    - apk add gcc musl-dev python3-dev
+    - pip3 install paramiko
     - python3 -m unittest -v test/TestStringMethods.py
 
 deploy-prod:
