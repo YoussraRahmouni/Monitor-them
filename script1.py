@@ -13,4 +13,4 @@ def sshcmd(hostname, port, username, password, command):
         print(line)
     return output
 
-sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "ifconfig -a")
+#sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "ifconfig -a")
