@@ -11,5 +11,5 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue("memory" in script1.sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "vmstat"))
 
 
-#if __name__ == '__main__':
-    #unittest.main()
+if __name__ == '__main__':
+    unittest.main()
