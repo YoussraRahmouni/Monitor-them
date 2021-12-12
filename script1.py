@@ -8,7 +8,7 @@ def sshcmd(hostname, port, username, password, command):
     print(hostname, port, username, password)
     client.connect(hostname, port=port, username=username, password=password)
 
-    _, stdout, stderr = client.exec_command(command)
+    _, stdout, stderr = client.exec_command(command,timeout=None)
     output = stdout.read().decode("utf-8")
     for line in output.splitlines():
         print(line)
