@@ -15,7 +15,7 @@ test-job0:
     - echo "This job tests something"
 test-job1:
   stage: test
-  #image: python:3.8-alpine
+  image: python:3.8-alpine
   script:
     - export http_proxy=http://cache.univ-st-etienne.fr:3128/
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
