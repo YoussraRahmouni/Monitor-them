@@ -12,7 +12,7 @@ def sshcmd(hostname, port, username, password, command):
     output = stdout.read().decode("utf-8")
     try:
         for line in output.splitlines():
-        print(line)
+            print(line)
     finally:
         if client:
             client.close()
