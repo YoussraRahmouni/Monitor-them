@@ -11,8 +11,13 @@ stages:
   - deploy
 test-job0:
   stage: test
+  image: python:3.8-alpine
   script:
-    - echo "This job tests something"
+    - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export https_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
+    - pip install pylint
+    - python3 test/pylintt.py
 test-job1:
   stage: test
   image: python:3.8-alpine
@@ -24,6 +29,7 @@ test-job1:
     - python3 -m pip install --upgrade pip
     - pip install paramiko
     - python3 -m unittest -v TestStringMethods.py
+
 
 deploy-prod:
   stage: deploy
