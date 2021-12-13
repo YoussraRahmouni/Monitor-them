@@ -17,7 +17,7 @@ test-job0:
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - pip install pylint
-    - files=(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
+    - files=`git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA`
     - echo $files
     - python3 test/pylintt.py
 test-job1:
