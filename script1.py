@@ -17,4 +17,5 @@ def sshcmd(hostname, port, username, password, command):
         if client:
             client.close()
     return output
+    
 #sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "ifconfig -a")
