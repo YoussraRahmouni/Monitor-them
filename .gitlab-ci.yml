@@ -17,6 +17,7 @@ test-job0:
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - pip install pylint
+    - echo $CI_COMMIT_SHA
     - python3 test/pylintt.py
 test-job1:
   stage: test
