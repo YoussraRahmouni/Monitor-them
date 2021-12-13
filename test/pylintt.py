@@ -2,7 +2,7 @@ import pylint.lint
 import pylint.reporters.text as text
 import io
 import os
-pylint_opts = ['--disable=trailing-whitespace', 'connexion.py']
+pylint_opts = ['--disable=trailing-whitespace', '../script1.py']
 pylint_output = io.StringIO() # Custom open stream
 with open("report.out", "w") as f:
     reporter = text.TextReporter(f)
