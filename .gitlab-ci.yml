@@ -31,6 +31,7 @@ test-job1:
     - apk add gcc python3-dev musl-dev libffi-dev openssl-dev make
     - python3 -m pip install --upgrade pip
     - pip install paramiko
+    - pip install apache-log-parser
     - python3 -m unittest -v TestStringMethods.py
 
 
