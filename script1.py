@@ -1,5 +1,4 @@
 import paramiko
-
 def sshcmd(hostname, port, username, password, command):
     client = paramiko.SSHClient()
     client.load_system_host_keys()
