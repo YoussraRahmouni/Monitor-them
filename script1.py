@@ -27,5 +27,5 @@ log_line=sshcmd("161.3.160.65", 22, "interfadm", "Projet654!","head /var/log/apa
 def log_parsing(log_line):
     
     line_parser = apache_log_parser.make_parser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
-    log_line_data=line_parser(log_line_data)
+    log_line_data=line_parser(log_line)
     return(log_line_data)
