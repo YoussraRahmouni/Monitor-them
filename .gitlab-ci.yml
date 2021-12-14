@@ -20,7 +20,7 @@ test-job0:
     - apk update && apk add git
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
-    - python3 test/pylintt.py $files
+    - python3 test/linter.py $files
 test-job1:
   stage: test
   image: python:3.8-alpine
