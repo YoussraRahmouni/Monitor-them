@@ -1,5 +1,6 @@
 import paramiko
 import apache_log_parser
+from pprint import pprint
 
 def sshcmd(hostname, port, username, password, command):
     client = paramiko.SSHClient()
