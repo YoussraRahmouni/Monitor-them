@@ -1,4 +1,4 @@
-# group8
+``# group8
 **Configuring pylint localy**
 
 Step 1
@@ -14,6 +14,7 @@ command: touch pre-commit
 
 Step 4
 Add this code to pre-commit file and save 
+`
 #!/bin/bash
 
 echo "Running pre-commit hook"
@@ -29,5 +30,6 @@ if [ $? -ne 0 ]; then
  echo "Tests must pass before commit!"
  exit 1
 fi
+`
 
 This will launch pylint test before commiting locally and prevent commiting if code format is not conform
