@@ -45,7 +45,7 @@ test-job2:
     - pip install paramiko
     - pip install apache-log-parser
     - pip install coverage
-    - coverage run -m unittest -v TestStringMethods.py
+    - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
 deploy-prod:
   stage: deploy
