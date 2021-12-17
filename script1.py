@@ -20,7 +20,7 @@ def sshcmd(hostname, port, username, password, command):
 
 #sshcmd("161.3.160.65", 22, "interfadm", "Projet654!", "tail -100 /var/log/apache2/access.log")
 
-log=sshcmd("161.3.160.65", 22, "interfadm", "Projet654!","tail -1 /var/log/apache2/access.log")
+#log=sshcmd("161.3.160.65", 22, "interfadm", "Projet654!","tail -1 /var/log/apache2/access.log")
 
 
 
