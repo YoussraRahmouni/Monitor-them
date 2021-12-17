@@ -33,6 +33,20 @@ test-job1:
     - pip install paramiko
     - pip install apache-log-parser
     - python3 -m unittest -v TestStringMethods.py
+test-job2:
+  stage: test
+  image: python:3.8-alpine
+  script:
+    - export http_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export https_proxy=http://cache.univ-st-etienne.fr:3128/
+    - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
+    - apk add gcc python3-dev musl-dev libffi-dev openssl-dev make
+    - python3 -m pip install --upgrade pip
+    - pip install paramiko
+    - pip install apache-log-parser
+    - pip install coverage
+    - coverage run -m unittest -v TestStringMethods.py
+    - coverage report -m
 
 
 deploy-prod:
