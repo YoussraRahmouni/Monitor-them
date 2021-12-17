@@ -47,6 +47,7 @@ test-job2:
     - pip install coverage
     - coverage run -m unittest -v TestStringMethods.py
     - coverage report -m
+    - coverage html
 
 
 deploy-prod:
