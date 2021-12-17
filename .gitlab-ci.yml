@@ -47,7 +47,7 @@ test-job2:
     - pip install coverage
     - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
-    - coverage: '/TOTAL.*\s+(\d+\%)/'
+  coverage: '/TOTAL.*\s+(\d+\%)/'
 deploy-prod:
   stage: deploy
   script:
