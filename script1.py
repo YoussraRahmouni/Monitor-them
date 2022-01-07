@@ -71,7 +71,7 @@ def count_difference(machine_name, fichier_log):
             current_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",log);
             current_log_data=line_parser(current_log)#Dictionnary
 
-            print(current_log_data["time_received_datetimeobj"])
+            #print(current_log_data["time_received_datetimeobj"])
 
             if current_log_data['status']>'399' and current_log_data['status']<'600':
                 error_count+=1
