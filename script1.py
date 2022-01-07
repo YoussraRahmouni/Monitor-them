@@ -3,6 +3,7 @@ import apache_log_parser
 from pprint import pprint
 import datetime
 import time
+from datetime import datetime, timedelta
 
 def sshcmd(hostname, port, username, password, command):
     client = paramiko.SSHClient()
@@ -15,7 +16,7 @@ def sshcmd(hostname, port, username, password, command):
     output = stdout.read().decode("utf-8")
     #for line in output.splitlines():
         #print(line)
-    client.close();
+    client.close()
     return output
 
 
@@ -38,8 +39,6 @@ def log_parsing(log_line):
 
 ###
 #test_parser= '127.0.0.1 - - [07/Dec/2021:12:26:14 +0100] "GET /index.html HTTP/1.1" 200 3477 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0"'
-
-previous_date=datetime.datetime(2022, 1, 4, 12, 15, 0)
 
 
 line_parser = apache_log_parser.make_parser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
@@ -106,12 +105,12 @@ def count_difference(machine_name, fichier_log):
         #print("Error Count : ",error_count)
         #print("Unique Ips : ",len(ip_list))
         #print(n-1)
-        return[CpuUsage,MemUsed,page_list,errror_count,len(ip_list)]
-        
-        #pour récupérer les données : 
+        return[CpuUsage,MemUsed,page_list,error_count,len(ip_list)]
+
+        #pour récupérer les données :
         #countdifference(nom_machine, nom_fichier_logs)[0] : utilisation cpu
         #countdifference(nom_machine, nom_fichier_logs)[1] : utilisation memoire
-        
+
         #countdifference(nom_machine, nom_fichier_logs)[2][x][0/1] : page visitée et nb de fois(faire une boucle pour tout afficher)
         #countdifference(nom_machine, nom_fichier_logs)[3] : nb erreurs
         #countdifference(nom_machine, nom_fichier_logs)[4] : nb de connection uniques
