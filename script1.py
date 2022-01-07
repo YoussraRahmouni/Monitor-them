@@ -99,10 +99,18 @@ def count_difference(machine_name, fichier_log):
             current_log_data=line_parser(current_log)#Dictionnary
             log_date=current_log_data["time_received_datetimeobj"]#timestamp
 
-        print("Cpu Usage : ",CpuUsage)
-        print("Memory Used : ",MemUsed)
-        print(page_list)
-        print("Error Count : ",error_count)
-        print("Unique Ips : ",len(ip_list))
-        print(n-1)
-        #return[CpuUsage,MemUsed,page_list,errro_count,len(ip_list)]
+        #print("Cpu Usage : ",CpuUsage)
+        #print("Memory Used : ",MemUsed)
+        #print(page_list)
+        #print("Error Count : ",error_count)
+        #print("Unique Ips : ",len(ip_list))
+        #print(n-1)
+        return[CpuUsage,MemUsed,page_list,errror_count,len(ip_list)]
+        
+        #pour récupérer les données : 
+        #countdifference(nom_machine, nom_fichier_logs)[0] : utilisation cpu
+        #countdifference(nom_machine, nom_fichier_logs)[1] : utilisation memoire
+        
+        #countdifference(nom_machine, nom_fichier_logs)[2][x][0/1] : page visitée et nb de fois(faire une boucle pour tout afficher)
+        #countdifference(nom_machine, nom_fichier_logs)[3] : nb erreurs
+        #countdifference(nom_machine, nom_fichier_logs)[4] : nb de connection uniques
