@@ -46,6 +46,7 @@ line_parser = apache_log_parser.make_parser("%h %l %u %t \"%r\" %>s %b \"%{Refer
 #delay_parser = apache_log_parser.make_parser("%D")
 
 def count_difference(machine_name, fichier_log):
+    previous_date=datetime.now()-timedelta(minutes=5)
     last_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",("tail -1 /var/log/apache2/"+fichier_log))
     parsed_last_log=log_parsing(last_log)
     #print(parsed_last_log)
@@ -70,7 +71,7 @@ def count_difference(machine_name, fichier_log):
             current_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",log);
             current_log_data=line_parser(current_log)#Dictionnary
 
-            print(current_log_data["time_received_datetimeobj"])
+            #print(current_log_data["time_received_datetimeobj"])
 
             if current_log_data['status']>'399' and current_log_data['status']<'600':
                 error_count+=1
