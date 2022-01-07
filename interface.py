@@ -5,6 +5,7 @@ import dash
 from dash import dcc, html
 import plotly.express as px
 import pandas as pd
+from dash.dependencies import Input, Output
 
 # external JavaScript files
 external_scripts = [
@@ -43,14 +44,9 @@ app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
 )
-
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+error_count = 1
+ip_count = 13
+delay_count = 3.2
 
 hdd = dict(
             data=[
@@ -137,16 +133,16 @@ app.layout = html.Div(className="main-container", children=[
             html.Div(className="card-body", children=(
                 html.Div(className="number-row", children=[
                 html.Div(className="col-sm number-data", style={'color': 'red'}, children=[
-                    html.Span(className="number-field", children="0"),
+                    html.Span(className="number-field", id="live_error"),
                     html.Span(className="number-type", children="Erreurs")
                 ]),
                 html.Div(className="col-sm number-data", style={'color': 'green'}, children=[
-                    html.Span(className="number-field", children="12"),
+                    html.Span(className="number-field", children=ip_count),
                     html.Span(className="number-type", children="Adresses IP uniques")
                 ]),
                 html.Div(className="col-sm number-data", style={'color': 'black'}, children=[
-                    html.Span(className="number-field", children="3.5us"),
-                    html.Span(className="number-type", children="Délai de réponse")
+                    html.Span(className="number-field", children=delay_count),
+                    html.Span(className="number-type", children="Délai de réponse (en us)")
                 ])
                 ])
                 )
@@ -239,8 +235,17 @@ app.layout = html.Div(className="main-container", children=[
                 )
             )]
         ),
-    ])
+    ]),
+    dcc.Interval(
+        id='interval-component',
+        interval=5*1000, # in milliseconds
+        n_intervals=0
+    )
 ])
+@app.callback(Output('live_error', 'children'),
+              Input('interval-component', 'n_intervals'))
+def update_error(input_value):
+    return format(input_value)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
