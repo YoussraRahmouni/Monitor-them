@@ -5,9 +5,7 @@ default:
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - ip a
-stages:
-  - build
-build-job:
+build-job1:
   image: docker:19.03.12
   stage: build
   services:
