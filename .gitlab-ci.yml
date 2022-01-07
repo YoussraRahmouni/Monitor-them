@@ -15,7 +15,7 @@ test-job0:
   script:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
-    - python3 test/linter.py $files || echo $?
+    - python test/linter.py $files || echo $?
 deploy-prod:
   stage: deploy
   script:
