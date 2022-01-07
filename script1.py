@@ -46,6 +46,7 @@ line_parser = apache_log_parser.make_parser("%h %l %u %t \"%r\" %>s %b \"%{Refer
 #delay_parser = apache_log_parser.make_parser("%D")
 
 def count_difference(machine_name, fichier_log):
+    previous_date=datetime.now()-timedelta(minutes=5)
     last_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",("tail -1 /var/log/apache2/"+fichier_log))
     parsed_last_log=log_parsing(last_log)
     #print(parsed_last_log)
