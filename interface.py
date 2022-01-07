@@ -9,8 +9,7 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output
-from script1 import count_difference
-from collections import deque
+from script1 import getData
 import numpy
 
 # external JavaScript files
@@ -45,7 +44,7 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = count_difference("monitorme2.ddns.net", "other_vhosts_access.log")
+data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
@@ -65,14 +64,14 @@ hdd = dict(
                 dict(
                     x=[],
                     y=[],
-                    name='* of Disk use',
+                    name='% of Disk use',
                     marker=dict(
                         color='rgb(55, 83, 109)'
                     )
                 )
             ],
             layout=dict(
-                title='Disk',
+                title='Disk(%)',
                 showlegend=True,
                 legend=dict(
                     x=0,
@@ -98,7 +97,7 @@ cpu = dict(
                 )
             ],
             layout=dict(
-                title='CPU',
+                title='CPU(%)',
                 showlegend=True,
                 legend=dict(
                     x=0,
@@ -230,18 +229,15 @@ app.layout = html.Div(className="main-container", children=[
     Output('live_ip', 'children'),
     Output('cpu', 'figure'),
     Output('hdd', 'figure'),
-    #Output('twos', 'children'),
-    #Output('threes', 'children'),
-    #Output('x^x', 'children'),
     Input('interval-component', 'n_intervals'))
 def callback(n):
-    data = count_difference("monitorme2.ddns.net", "other_vhosts_access.log")
+    data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
     X.append(n)
     Y.append(data[0])
     data_c = plotly.graph_objs.Scatter(
         x=list(X),
         y=list(Y),
-        name="Scatter",
+        name="* of CPU use",
         mode='lines+markers'
     )
     XH.append(n)
@@ -249,7 +245,7 @@ def callback(n):
     data_h = plotly.graph_objs.Scatter(
         x=list(XH),
         y=list(YH),
-        name="Scatter",
+        name="% of Disk use",
         mode='lines+markers'
     )
     data_cpu = {'data': [data_c],
