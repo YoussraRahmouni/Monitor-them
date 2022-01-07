@@ -2,7 +2,8 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 import dash
-from dash import dcc, html
+import dash_core_components as dcc
+import dash_html_components as html
 import plotly.express as px
 import pandas as pd
 from dash.dependencies import Input, Output
@@ -243,7 +244,7 @@ app.layout = html.Div(className="main-container", children=[
     )
 ])
 @app.callback(Output('live_error', 'children'),
-              Input('interval-component', 'n_intervals'))
+              [Input('interval-component', 'n_intervals')])
 def update_error(input_value):
     return format(input_value)
 
