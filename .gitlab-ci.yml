@@ -5,7 +5,19 @@ default:
     - export https_proxy=http://cache.univ-st-etienne.fr:3128/
     - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
     - ip a
-build-job1:
-  stage: build
+stages:
+  - build
+  - test
+  - deploy
+test-job0:
+  stage: test
+  image: rahmouniyoussra/prjtinterface:latest
   script:
-    - echo "hello "
+    - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
+    - echo $files
+    - python3 test/linter.py $files || echo $?
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+
