@@ -24,9 +24,9 @@ def sshcmd(hostname, port, username, password, command):
 
 #log=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","tail -1 /var/log/apache2/access.log.1")
 
-MemUsed=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","free | tail -2 | head -1 | awk '{ print $5 }' ")
+#MemUsed=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","free | tail -2 | head -1 | awk '{ print $5 }' ")
 
-CpuUsage=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'")
+#CpuUsage=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'")
 
 
 def log_parsing(log_line):
@@ -56,9 +56,9 @@ def getData(machine_name, fichier_log):
 
     error_count=0
 
-    MemUsed=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","free | grep Mem| awk '{ print $3/$2 *100.0}' ")
+    MemUsed=sshcmd(machine_name, 22, "interfadm", "Projet654!","free | grep Mem| awk '{ print $3/$2 *100.0}' ")
 
-    CpuUsage=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'")
+    CpuUsage=sshcmd(machine_name, 22, "interfadm", "Projet654!","cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'")
 
     if last_line_date >= previous_date :
         response_time=[]
