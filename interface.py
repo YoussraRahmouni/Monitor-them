@@ -50,6 +50,9 @@ app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
 )
+
+app.title = "Monitor Manager"
+
 # Dash CSS
 app.css.config.serve_locally = False
 
