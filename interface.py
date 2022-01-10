@@ -232,9 +232,9 @@ def callback(n,monitor):
     monitor_info = monitor.split(';')
     if last_monitor != monitor_info[0]:
         X =[0]
-        Y=[0]
+        Y=[]
         XH=[0]
-        YH=[0]
+        YH=[]
         last_monitor=monitor_info[0]
     data = getData(monitor_info[0], monitor_info[1])
     data_table = []
@@ -263,9 +263,9 @@ def callback(n,monitor):
         mode='lines+markers'
     )
     data_cpu = {'data': [data_c],
-                'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[numpy.amin(numpy.array(Y).astype(float)),numpy.amax(numpy.array(Y).astype(float))]))}
+                'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[0,numpy.amax(numpy.array(Y).astype(float))+10]))}
     data_hdd = {'data': [data_h],
-                'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[numpy.amin(numpy.array(YH).astype(float)),numpy.amax(numpy.array(YH).astype(float))]))}
+                'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[0,numpy.amax(numpy.array(YH).astype(float))+10]))}
     name = "Monitor : " + monitor_info[0]
 
     return data[3], data[4],data[5], data_cpu, data_hdd,data_table,name
