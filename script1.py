@@ -2,7 +2,6 @@ import paramiko
 import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
-import time
 
 def sshcmd(hostname, port, username, password, command):
     client = paramiko.SSHClient()
@@ -54,7 +53,7 @@ def getData(machine_name, fichier_log):
     last_line_date=parsed_last_log["time_received_datetimeobj"]
     #print(last_line_date)
     n=1
-    
+
     error_count=0
 
     MemUsed=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","free | grep Mem| awk '{ print $3/$2 *100.0}' ")
@@ -62,6 +61,7 @@ def getData(machine_name, fichier_log):
     CpuUsage=sshcmd("37.110.193.25", 22, "interfadm", "Projet654!","cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'")
 
     if last_line_date >= previous_date :
+        response_time=[]
         ip_list=[]
         count_page_list=[]
         diff_page_list=[]
@@ -99,26 +99,29 @@ def getData(machine_name, fichier_log):
                     if count_page_list[j]==diff_page_list[i]:
                         c+=1
                 page_list[i]=([diff_page_list[i],c])
+            responseN=sshcmd(machine_name, 22, "interfadm", "Projet654!","cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk '{print $11}'")
+            response_time.append(int(responseN))
             n+=1
             #Update variables
             log="tail -"+str(n)+" /var/log/apache2/"+fichier_log+" | head -1"
             current_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",log)
             current_log_data=line_parser(current_log)#Dictionnary
             log_date=current_log_data["time_received_datetimeobj"]#timestamp
-
-
+        
+        if n>1 :
+            AVG_response_time=sum(response_time)/(n-1)
         #print("Cpu Usage : ",CpuUsage)
         #print("Memory Used : ",MemUsed)
         #print(page_list)
         #print("Error Count : ",error_count)
         #print("Unique Ips : ",len(ip_list))
         #print(n-1)
-        return[CpuUsage,MemUsed,page_list,error_count,len(ip_list)]
-        
-        #pour récupérer les données : 
+        return[CpuUsage,MemUsed,page_list,error_count,len(ip_list), AVG_response_time]
+
+        #pour récupérer les données :
         #countdifference(nom_machine, nom_fichier_logs)[0] : utilisation cpu
         #countdifference(nom_machine, nom_fichier_logs)[1] : utilisation memoire
-        
+
         #countdifference(nom_machine, nom_fichier_logs)[2][x][0/1] : page visitée et nb de fois(faire une boucle pour tout afficher)
         #countdifference(nom_machine, nom_fichier_logs)[3] : nb erreurs
         #countdifference(nom_machine, nom_fichier_logs)[4] : nb de connection uniques
