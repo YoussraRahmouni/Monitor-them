@@ -2,11 +2,15 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 #test
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 import plotly.express as px
+import plotly
+import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output
+from script1 import getData
+import numpy
 
 # external JavaScript files
 external_scripts = [
@@ -40,30 +44,42 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
+data = getData("monitorme1.ddns.net", "access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
 )
+
+app.title = "Monitor Manager"
+
+# Dash CSS
+app.css.config.serve_locally = False
+
+# Loading screen CSS
+app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/brPBPO.css"})
 error_count = 1
 ip_count = 13
 delay_count = 3.2
 
+XH = []
+XH.append(0)
+
+YH = []
+YH.append(0)
 hdd = dict(
             data=[
                 dict(
-                    x=[1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                    2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                    y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
-                    350, 430, 474, 526, 488, 537, 500, 439],
-                    name='* of Disk use',
+                    x=[],
+                    y=[],
+                    name='% of Disk use',
                     marker=dict(
                         color='rgb(55, 83, 109)'
                     )
                 )
             ],
             layout=dict(
-                title='Disk',
+                title='Disk(%)',
                 showlegend=True,
                 legend=dict(
                     x=0,
@@ -72,36 +88,16 @@ hdd = dict(
                 margin=dict(l=40, r=0, t=40, b=30)
             )
         )
-bp = dict(
-            data=[
-                dict(
-                    x=[1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                    2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                    y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
-                    350, 430, 474, 526, 488, 537, 500, 439],
-                    name='% of BP use',
-                    marker=dict(
-                        color='rgb(55, 83, 109)'
-                    )
-                )
-            ],
-            layout=dict(
-                title='Bandwith',
-                showlegend=True,
-                legend=dict(
-                    x=0,
-                    y=1.0
-                ),
-                margin=dict(l=40, r=0, t=40, b=30)
-            )
-        )
+X = []
+X.append(0)
+
+Y = []
+Y.append(0)
 cpu = dict(
             data=[
                 dict(
-                    x=[1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003,
-                    2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012],
-                    y=[16, 13, 10, 11, 28, 37, 43, 55, 56, 88, 105, 156, 270,
-                    299, 340, 403, 549, 499],
+                    x=[],
+                    y=[],
                     name='% of CPU use',
                     marker=dict(
                         color='rgb(26, 118, 255)'
@@ -109,7 +105,7 @@ cpu = dict(
                 )
             ],
             layout=dict(
-                title='CPU',
+                title='CPU(%)',
                 showlegend=True,
                 legend=dict(
                     x=0,
@@ -121,28 +117,45 @@ cpu = dict(
 
 app.layout = html.Div(className="main-container", children=[
     html.Nav(className="navbar navbar-light bg-light", children=[
-    html.Div(className='navbar-brand', children=[
+    html.Div(className='navbar-brand', id="navb",children=[
         html.H1(className="h1-logo",
             children=[html.Img(className="logo",src='https://www.freeiconspng.com/thumbs/dashboard-icon/dashboard-icon-3.png'),'Dashboard']
+        ),
+        dcc.Dropdown(
+            id='monitor-dropdown',
+            options=[
+                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;access.log'},
+                {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
+                {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
+            ],
+            value='monitorme1.ddns.net;access.log',
+            clearable=False,
+            searchable=False
         ),
         ])
     ]),
     html.Div(className="container content", children=[
+        dcc.Loading(
+            id="loading-1",
+            type="default",
+            fullscreen=True
+        ),
+        html.H3(id="name", children="Monitor : monitorme1.ddns.net"),
         #ONE ROW
         html.Div(className="row card" , children=[
             html.H4(className="card-header", children=("Données")),
             html.Div(className="card-body", children=(
                 html.Div(className="number-row", children=[
                 html.Div(className="col-sm number-data", style={'color': 'red'}, children=[
-                    html.Span(className="number-field", id="live_error"),
+                    html.Span(className="number-field", id="live_error", children=(data[3])),
                     html.Span(className="number-type", children="Erreurs")
                 ]),
                 html.Div(className="col-sm number-data", style={'color': 'green'}, children=[
-                    html.Span(className="number-field", children=ip_count),
+                    html.Span(className="number-field", id="live_ip",children=(data[4])),
                     html.Span(className="number-type", children="Adresses IP uniques")
                 ]),
                 html.Div(className="col-sm number-data", style={'color': 'black'}, children=[
-                    html.Span(className="number-field", children=delay_count),
+                    html.Span(className="number-field", id="live_delay", children=(round(data[5],0))),
                     html.Span(className="number-type", children="Délai de réponse (en us)")
                 ])
                 ])
@@ -158,17 +171,9 @@ app.layout = html.Div(className="main-container", children=[
                     html.Div([
                         dcc.Graph(
                             figure = cpu,
-                            style={'height': 300},
-                            id='cpu'
-                        )
-                    ])
-                )),
-                html.Div(className="col-sm number-data", style={'color': 'green'}, children=(
-                    html.Div([
-                        dcc.Graph(
-                            figure = bp,
-                            style={'height': 300},
-                            id='bp'
+                            style={'height': 400},
+                            id='cpu',
+                            animate=True
                         )
                     ])
                 )),
@@ -176,8 +181,9 @@ app.layout = html.Div(className="main-container", children=[
                     html.Div([
                         dcc.Graph(
                             figure = hdd,
-                            style={'height': 300},
-                            id='hdd'
+                            style={'height': 400},
+                            id='hdd',
+                            animate=True
                         )
                     ])
                 ))
@@ -197,40 +203,7 @@ app.layout = html.Div(className="main-container", children=[
                                 html.Th(children=("Nombre de visites"))
                             ])
                         )),
-                        html.Tbody(children=[
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ])
-                        ])
+                        html.Tbody(id="tbody")
                     ])
                 ))
                 )
@@ -239,14 +212,63 @@ app.layout = html.Div(className="main-container", children=[
     ]),
     dcc.Interval(
         id='interval-component',
-        interval=5*1000, # in milliseconds
+        interval=30*1000, # in milliseconds
         n_intervals=0
     )
 ])
-@app.callback(Output('live_error', 'children'),
-              [Input('interval-component', 'n_intervals')])
-def update_error(input_value):
-    return format(input_value)
+last_monitor = "monitorme1.ddns.net"
+@app.callback(
+    Output('live_error', 'children'),
+    Output('live_ip', 'children'),
+    Output('live_delay', 'children'),
+    Output('cpu', 'figure'),
+    Output('hdd', 'figure'),
+    Output('tbody', 'children'),
+    Output('name', 'children'),
+    Input('interval-component', 'n_intervals'),
+    Input('monitor-dropdown', 'value'))
+def callback(n,monitor):
+    global last_monitor,X,Y,XH,YH
+    monitor_info = monitor.split(';')
+    if last_monitor != monitor_info[0]:
+        X =[0]
+        Y=[]
+        XH=[0]
+        YH=[]
+        last_monitor=monitor_info[0]
+    data = getData(monitor_info[0], monitor_info[1])
+    data_table = []
+    for item in data[2]:
+        t_item = html.Tr(children=[
+            html.Td(children=(item[0])),
+            html.Td(children=(item[1]))
+
+        ])
+        data_table.append(t_item)
+
+    X.append(n)
+    Y.append(data[0])
+    data_c = plotly.graph_objs.Scatter(
+        x=list(X),
+        y=list(Y),
+        name="* of CPU use",
+        mode='lines+markers'
+    )
+    XH.append(n)
+    YH.append(data[1])
+    data_h = plotly.graph_objs.Scatter(
+        x=list(XH),
+        y=list(YH),
+        name="% of Disk use",
+        mode='lines+markers'
+    )
+    data_cpu = {'data': [data_c],
+                'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[0,numpy.amax(numpy.array(Y).astype(float))+10]))}
+    data_hdd = {'data': [data_h],
+                'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[0,numpy.amax(numpy.array(YH).astype(float))+10]))}
+    name = "Monitor : " + monitor_info[0]
+
+    return data[3], data[4],round(data[5],0), data_cpu, data_hdd,data_table,name
 
 if __name__ == '__main__':
     app.run_server(debug=True)

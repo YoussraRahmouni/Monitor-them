@@ -2,6 +2,23 @@
     height: 100vh;
 }
 
+#navb {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#monitor-dropdown {
+    width: inherit;
+    max-width: 200px;
+    text-align: center;
+}
+
+#name {
+    text-align: center;
+}
+
 .content {
     background-color: "#6c757d";
     margin-top: 20px;

@@ -2,6 +2,7 @@ import paramiko
 import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
+import time
 
 def sshcmd(hostname, port, username, password, command):
     client = paramiko.SSHClient()
@@ -37,7 +38,6 @@ def log_parsing(log_line):
 
 ###
 #test_parser= '127.0.0.1 - - [07/Dec/2021:12:26:14 +0100] "GET /index.html HTTP/1.1" 200 3477 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0"'
-
 
 
 
