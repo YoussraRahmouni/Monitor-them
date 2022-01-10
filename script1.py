@@ -99,7 +99,7 @@ def getData(machine_name, fichier_log):
                     if count_page_list[j]==diff_page_list[i]:
                         c+=1
                 page_list[i]=([diff_page_list[i],c])
-            responseN=sshcmd(machine_name, 22, "interfadm", "Projet654!","cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk '{print $11}'")
+            responseN=sshcmd("monitorme1.ddns.net", 22, "interfadm", "Projet654!","cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk '{print $11}'")
             response_time.append(int(responseN))
             n+=1
             #Update variables
@@ -107,7 +107,7 @@ def getData(machine_name, fichier_log):
             current_log=sshcmd(machine_name, 22, "interfadm", "Projet654!",log)
             current_log_data=line_parser(current_log)#Dictionnary
             log_date=current_log_data["time_received_datetimeobj"]#timestamp
-        
+
         if n>1 :
             AVG_response_time=sum(response_time)/(n-1)
         #print("Cpu Usage : ",CpuUsage)
