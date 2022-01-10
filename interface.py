@@ -155,7 +155,7 @@ app.layout = html.Div(className="main-container", children=[
                     html.Span(className="number-type", children="Adresses IP uniques")
                 ]),
                 html.Div(className="col-sm number-data", style={'color': 'black'}, children=[
-                    html.Span(className="number-field", id="live_delay"),
+                    html.Span(className="number-field", id="live_delay", children=(round(data[5],0))),
                     html.Span(className="number-type", children="Délai de réponse (en us)")
                 ])
                 ])
@@ -268,7 +268,7 @@ def callback(n,monitor):
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[0,numpy.amax(numpy.array(YH).astype(float))+10]))}
     name = "Monitor : " + monitor_info[0]
 
-    return data[3], data[4],data[5], data_cpu, data_hdd,data_table,name
+    return data[3], data[4],round(data[5],0), data_cpu, data_hdd,data_table,name
 
 if __name__ == '__main__':
     app.run_server(debug=True)
