@@ -116,7 +116,7 @@ cpu = dict(
         )
 
 app.layout = html.Div(className="main-container", children=[
-    html.Nav(className="navbar navbar-light bg-light", children=[
+    html.Nav(className="navbar sticky-top navbar-light bg-light", children=[
     html.Div(className='navbar-brand', id="navb",children=[
         html.H1(className="h1-logo",
             children=[html.Img(className="logo",src='https://www.freeiconspng.com/thumbs/dashboard-icon/dashboard-icon-3.png'),'Dashboard']
@@ -210,6 +210,9 @@ app.layout = html.Div(className="main-container", children=[
             )]
         ),
     ]),
+    html.Footer(className="bg-light text-center text-lg-start", children=(
+        html.Div(className="text-center p-3", children=("Monitor Manager - Développé par le groupe 8"))
+    )),
     dcc.Interval(
         id='interval-component',
         interval=30*1000, # in milliseconds
