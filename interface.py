@@ -178,40 +178,7 @@ app.layout = html.Div(className="main-container", children=[
                                 html.Th(children=("Nombre de visites"))
                             ])
                         )),
-                        html.Tbody(children=[
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ]),
-                            html.Tr(children=[
-                                html.Td(children=("/index.html")),
-                                html.Td(children=("3"))
-                            ])
-                        ])
+                        html.Tbody(id="tbody")
                     ])
                 ))
                 )
@@ -229,9 +196,19 @@ app.layout = html.Div(className="main-container", children=[
     Output('live_ip', 'children'),
     Output('cpu', 'figure'),
     Output('hdd', 'figure'),
+    Output('tbody', 'children'),
     Input('interval-component', 'n_intervals'))
 def callback(n):
     data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
+    data_table = []
+    for item in data[2]:
+        t_item = html.Tr(children=[
+            html.Td(children=(item[0])),
+            html.Td(children=(item[1]))
+
+        ])
+        data_table.append(t_item)
+
     X.append(n)
     Y.append(data[0])
     data_c = plotly.graph_objs.Scatter(
@@ -253,7 +230,7 @@ def callback(n):
     data_hdd = {'data': [data_h],
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[numpy.amin(numpy.array(YH).astype(float)),numpy.amax(numpy.array(YH).astype(float))]))}
 
-    return data[3], data[4], data_cpu, data_hdd
+    return data[3], data[4], data_cpu, data_hdd,data_table
 
 if __name__ == '__main__':
     app.run_server(debug=True)
