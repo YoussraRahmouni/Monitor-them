@@ -216,6 +216,7 @@ app.layout = html.Div(className="main-container", children=[
         n_intervals=0
     )
 ])
+last_monitor = "monitorme1.ddns.net"
 @app.callback(
     Output('live_error', 'children'),
     Output('live_ip', 'children'),
@@ -227,7 +228,14 @@ app.layout = html.Div(className="main-container", children=[
     Input('interval-component', 'n_intervals'),
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
+    global last_monitor,X,Y,XH,YH
     monitor_info = monitor.split(';')
+    if last_monitor != monitor_info[0]:
+        X =[0]
+        Y=[0]
+        XH=[0]
+        YH=[0]
+        last_monitor=monitor_info[0]
     data = getData(monitor_info[0], monitor_info[1])
     data_table = []
     for item in data[2]:
