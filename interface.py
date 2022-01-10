@@ -44,12 +44,17 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
+data = getData("monitorme1.ddns.net", "access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
 )
+# Dash CSS
+app.css.config.serve_locally = False
+
+# Loading screen CSS
+app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/brPBPO.css"})
 error_count = 1
 ip_count = 13
 delay_count = 3.2
@@ -109,13 +114,30 @@ cpu = dict(
 
 app.layout = html.Div(className="main-container", children=[
     html.Nav(className="navbar navbar-light bg-light", children=[
-    html.Div(className='navbar-brand', children=[
+    html.Div(className='navbar-brand', id="navb",children=[
         html.H1(className="h1-logo",
             children=[html.Img(className="logo",src='https://www.freeiconspng.com/thumbs/dashboard-icon/dashboard-icon-3.png'),'Dashboard']
+        ),
+        dcc.Dropdown(
+            id='monitor-dropdown',
+            options=[
+                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;acces.log'},
+                {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
+                {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
+            ],
+            value='monitorme1.ddns.net;acces.log',
+            clearable=False,
+            searchable=False
         ),
         ])
     ]),
     html.Div(className="container content", children=[
+        dcc.Loading(
+            id="loading-1",
+            type="default",
+            fullscreen=True
+        ),
+        html.H3(id="name", children="Monitor : monitorme1.ddns.net"),
         #ONE ROW
         html.Div(className="row card" , children=[
             html.H4(className="card-header", children=("Données")),
@@ -197,9 +219,12 @@ app.layout = html.Div(className="main-container", children=[
     Output('cpu', 'figure'),
     Output('hdd', 'figure'),
     Output('tbody', 'children'),
-    Input('interval-component', 'n_intervals'))
-def callback(n):
-    data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
+    Output('name', 'children'),
+    Input('interval-component', 'n_intervals'),
+    Input('monitor-dropdown', 'value'))
+def callback(n,monitor):
+    monitor_info = monitor.split(';')
+    data = getData(monitor_info[0], monitor_info[1])
     data_table = []
     for item in data[2]:
         t_item = html.Tr(children=[
@@ -229,8 +254,9 @@ def callback(n):
                 'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[numpy.amin(numpy.array(Y).astype(float)),numpy.amax(numpy.array(Y).astype(float))]))}
     data_hdd = {'data': [data_h],
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[numpy.amin(numpy.array(YH).astype(float)),numpy.amax(numpy.array(YH).astype(float))]))}
+    name = "Monitor : " + monitor_info[0]
 
-    return data[3], data[4], data_cpu, data_hdd,data_table
+    return data[3], data[4], data_cpu, data_hdd,data_table,name
 
 if __name__ == '__main__':
     app.run_server(debug=True)
