@@ -99,7 +99,7 @@ def getData(machine_name, fichier_log):
                     if count_page_list[j]==diff_page_list[i]:
                         c+=1
                 page_list[i]=([diff_page_list[i],c])
-            responseN=sshcmd("monitorme1.ddns.net", 22, "interfadm", "Projet654!","cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk '{print $11}'")
+            responseN=sshcmd("monitorme1.ddns.net", 22, "interfadm", "Projet654!","cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk 'NR=="+str(1)+"{print $11}'")
             response_time.append(int(responseN))
             n+=1
             #Update variables
