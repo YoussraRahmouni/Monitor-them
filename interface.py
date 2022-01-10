@@ -121,7 +121,7 @@ app.layout = html.Div(className="main-container", children=[
         dcc.Dropdown(
             id='monitor-dropdown',
             options=[
-                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;acces.log'},
+                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;access.log'},
                 {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
                 {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
             ],

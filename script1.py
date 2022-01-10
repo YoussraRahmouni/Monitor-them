@@ -116,13 +116,9 @@ def getData(machine_name, fichier_log):
         #print("Error Count : ",error_count)
         #print("Unique Ips : ",len(ip_list))
         #print(n-1)
-<<<<<<< HEAD
-        return[CpuUsage,MemUsed,page_list,error_count,len(ip_list)]
-=======
         return[CpuUsage,MemUsed,page_list,error_count,len(ip_list), AVG_response_time]
 
         #pour récupérer les données :
->>>>>>> feature
         #countdifference(nom_machine, nom_fichier_logs)[0] : utilisation cpu
         #countdifference(nom_machine, nom_fichier_logs)[1] : utilisation memoire
 
