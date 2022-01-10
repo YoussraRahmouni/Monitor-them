@@ -69,3 +69,7 @@ footer {
     margin-top: 15px;
     width: 100vw;
 }
+
+td {
+    word-break: break-word;
+}
