@@ -125,7 +125,7 @@ app.layout = html.Div(className="main-container", children=[
                 {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
                 {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
             ],
-            value='monitorme1.ddns.net;acces.log',
+            value='monitorme1.ddns.net;access.log',
             clearable=False,
             searchable=False
         ),
@@ -216,6 +216,7 @@ app.layout = html.Div(className="main-container", children=[
 @app.callback(
     Output('live_error', 'children'),
     Output('live_ip', 'children'),
+    Output('live_delay', 'children'),
     Output('cpu', 'figure'),
     Output('hdd', 'figure'),
     Output('tbody', 'children'),
@@ -256,7 +257,7 @@ def callback(n,monitor):
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[numpy.amin(numpy.array(YH).astype(float)),numpy.amax(numpy.array(YH).astype(float))]))}
     name = "Monitor : " + monitor_info[0]
 
-    return data[3], data[4], data_cpu, data_hdd,data_table,name
+    return data[3], data[4],data[5], data_cpu, data_hdd,data_table,name
 
 if __name__ == '__main__':
     app.run_server(debug=True)
