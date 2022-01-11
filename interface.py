@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly
 import plotly.graph_objs as go
 import pandas as pd
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from script1 import getData
 import numpy
 
@@ -52,21 +52,16 @@ app = dash.Dash(__name__,
 )
 
 app.title = "Monitor Manager"
-
 # Dash CSS
 app.css.config.serve_locally = False
 
 # Loading screen CSS
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/brPBPO.css"})
-error_count = 1
-ip_count = 13
-delay_count = 3.2
 
-XH = []
-XH.append(0)
+XH = list()
 
-YH = []
-YH.append(0)
+YH = list()
+hdd = list()
 hdd = dict(
             data=[
                 dict(
@@ -88,11 +83,10 @@ hdd = dict(
                 margin=dict(l=40, r=0, t=40, b=30)
             )
         )
-X = []
-X.append(0)
+X = list()
 
-Y = []
-Y.append(0)
+Y = list()
+cpu = list()
 cpu = dict(
             data=[
                 dict(
@@ -114,6 +108,8 @@ cpu = dict(
                 margin=dict(l=40, r=0, t=40, b=30)
             )
         )
+data_c = list()
+data_h = list()
 
 app.layout = html.Div(className="main-container", children=[
     html.Nav(className="navbar sticky-top navbar-light bg-light", children=[
@@ -231,8 +227,11 @@ last_monitor = "monitorme1.ddns.net"
     Input('interval-component', 'n_intervals'),
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
-    global last_monitor,X,Y,XH,YH
+    global last_monitor,X,Y,XH,YH,data_c,data_h
+
     monitor_info = monitor.split(';')
+    if n == 0 and last_monitor == monitor_info[0]:
+        n = len(XH)
     if last_monitor != monitor_info[0]:
         X =[0]
         Y=[]
