@@ -160,7 +160,7 @@ app.layout = html.Div(className="main-container", children=[
         ),
         #ONE ROW
         html.Div(className="row card" , children=[
-            html.H4(className="card-header", children=("Données")),
+            html.H4(className="card-header", children=("Performance")),
             html.Div(className="card-body", children=(
                 html.Div(className="number-row", children=[
                 html.Div(className="col-sm number-data", style={'color': 'red'}, children=(
