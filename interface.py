@@ -230,8 +230,6 @@ def callback(n,monitor):
     global last_monitor,X,Y,XH,YH,data_c,data_h
 
     monitor_info = monitor.split(';')
-    if n == 0 and last_monitor == monitor_info[0]:
-        n = len(XH)
     if last_monitor != monitor_info[0]:
         X =[0]
         Y=[]
@@ -248,7 +246,7 @@ def callback(n,monitor):
         ])
         data_table.append(t_item)
 
-    X.append(n)
+    X.append(len(X))
     Y.append(data[0])
     data_c = plotly.graph_objs.Scatter(
         x=list(X),
@@ -256,7 +254,7 @@ def callback(n,monitor):
         name="* of CPU use",
         mode='lines+markers'
     )
-    XH.append(n)
+    XH.append(len(XH))
     YH.append(data[1])
     data_h = plotly.graph_objs.Scatter(
         x=list(XH),
