@@ -22,7 +22,7 @@
 .content {
     background-color: "#6c757d";
     margin-top: 20px;
-    height: 90%;
+    height: auto;
     padding: 10px;
 }
 
@@ -63,4 +63,13 @@
 
 .number-type {
     font-size: 1.5rem;
+}
+
+footer {
+    margin-top: 15px;
+    width: 100vw;
+}
+
+td {
+    word-break: break-word;
 }
