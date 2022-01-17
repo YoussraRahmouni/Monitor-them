@@ -50,7 +50,8 @@ delivery-job:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - cd /
     - ls
-    - systemctl start docker
+    - sudo service docker status
+    #- systemctl start docker
     - docker -v
     - containerId=$(docker inspect -f   '{{.Id}}'  SHORT_CONTAINER_ID-or-CONTAINER_NAME)
     - echo "$containerId"
