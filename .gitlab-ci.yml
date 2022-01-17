@@ -43,6 +43,8 @@ deploy-prod:
     
 delivery-job:
   stage: delivery
+  dependencies:
+    - deploy
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - ls
