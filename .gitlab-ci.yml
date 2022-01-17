@@ -48,6 +48,7 @@ delivery-job:
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - ls
+    - docker -v
     - containerId=$(docker inspect -f   '{{.Id}}'  SHORT_CONTAINER_ID-or-CONTAINER_NAME)
     - echo "$containerId"
     - docker cp projet $containerId:/
