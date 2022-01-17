@@ -46,10 +46,8 @@ delivery-job:
   image: docker:19.03.12
 
   variables:
-    CI_REGISTRY_USER: <dockerio-username>
-    CI_REGISTRY_PASSWORD: <dockerio-password>
     CI_REGISTRY: docker.io
-    CI_REGISTRY_IMAGE: index.docker.io/$CI_REGISTRY_USER/<imagename>
+    CI_REGISTRY_IMAGE: index.docker.io/$CI_REGISTRY_USER/project_image:latest
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
@@ -65,12 +63,15 @@ delivery-job:
 
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - cd /
-    - service docker start
+    #- cd /
+    #- service docker start
     #- containerId=$(docker inspect -f   '{{.Id}}'  SHORT_CONTAINER_ID-or-CONTAINER_NAME)
-    - containerId=$(cat /proc/self/cgroup | head -1 | tr --delete ‘10:memory:/docker/’)
-    - echo "$containerId"
-    - docker cp  $CI_PROJECT_DIR/ $containerId:/projet
+    #- containerId=$(cat /proc/self/cgroup | head -1 | tr --delete ‘10:memory:/docker/’)
+    #- echo "$containerId"
+    #- docker cp  $CI_PROJECT_DIR/ $containerId:/projet
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+
     
 
     
