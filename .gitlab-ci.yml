@@ -28,18 +28,18 @@ test-job2:
     - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
   coverage: '/TOTAL.*\s+(\d+\%)/'
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "deploy"
+#deploy-prod:
+#  stage: deploy
+#  script:
+#    - echo "deploy"
   #only:
   #  - master 
-  artifacts:
-    name: "projet"
-    paths:
-      - "/"
-    exclude:
-      - /__pycache__/
+#  artifacts:
+#    name: "projet"
+#    paths:
+#      - "/"
+#    exclude:
+#      - /__pycache__/
     
 delivery-job:
   stage: delivery
@@ -49,14 +49,11 @@ delivery-job:
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - cd /
-    - ls
     - service docker start
-    #- systemctl start docker
-    - docker -v
     #- containerId=$(docker inspect -f   '{{.Id}}'  SHORT_CONTAINER_ID-or-CONTAINER_NAME)
     - containerId=$(cat /proc/self/cgroup | head -1 | tr --delete ‘10:memory:/docker/’)
     - echo "$containerId"
-    - docker cp projet $containerId:/
+    - docker cp  $CI_PROJECT_DIR/ $containerId:/projet
     
 
     
