@@ -52,6 +52,7 @@ delivery-job:
     - ls
     - service docker start
     #- systemctl start docker
+    - docker ps
     - docker -v
     - containerId=$(docker inspect -f   '{{.Id}}'  SHORT_CONTAINER_ID-or-CONTAINER_NAME)
     - echo "$containerId"
