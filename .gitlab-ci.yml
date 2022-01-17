@@ -30,6 +30,8 @@ test-job2:
   coverage: '/TOTAL.*\s+(\d+\%)/'
 deploy-prod:
   stage: deploy
+  script:
+    - echo "deploy"
   #only:
   #  - master 
   artifacts:
@@ -38,7 +40,6 @@ deploy-prod:
       - "/"
     exclude:
       - /__pycache__/
-  
     
 delivery-job:
   stage: delivery
