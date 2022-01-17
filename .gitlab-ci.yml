@@ -43,6 +43,7 @@ deploy-prod:
     
 delivery-job:
   stage: delivery
+  image: rahmouniyoussra/prjtinterface:latest
   dependencies:
     - deploy-prod
   script:
