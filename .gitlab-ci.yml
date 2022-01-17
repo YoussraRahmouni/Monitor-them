@@ -31,8 +31,8 @@ deploy-prod:
   stage: deploy
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-  only:
-    - master 
+  #only:
+  #  - master 
   artifacts:
     name: "projet"
     paths:
