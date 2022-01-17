@@ -29,8 +29,6 @@ test-job2:
   coverage: '/TOTAL.*\s+(\d+\%)/'
 deploy-prod:
   stage: deploy
-  script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
   #only:
   #  - master 
   artifacts:
@@ -39,5 +37,10 @@ deploy-prod:
       - "/"
     exclude:
       - /__pycache__/
+  script:
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - cd projet/
+    - ls
+
     
     
