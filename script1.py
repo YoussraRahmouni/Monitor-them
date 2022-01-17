@@ -41,7 +41,7 @@ def getData(machine_name, fichier_log):
 
                 #Selection de la ligne de log a parser
                 log="tail -"+str(n)+" /var/log/apache2/"+fichier_log+" | head -1"
-                current_log=lt.sshcmd(log,client);
+                current_log=lt.sshcmd(log,client)
                 current_log_data=lt.log_parsing(current_log)
 
                 #en cas d'erreur, incrémentation du compteur d'erreur
