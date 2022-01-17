@@ -32,7 +32,7 @@ deploy-prod:
   #only:
   #  - master 
   artifacts:
-    name: "projet"
+    name: projet
     paths:
       - "/"
     exclude:
