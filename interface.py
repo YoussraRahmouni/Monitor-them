@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly
 import plotly.graph_objs as go
 import pandas as pd
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from script1 import getData
 import numpy
 
@@ -52,21 +52,16 @@ app = dash.Dash(__name__,
 )
 
 app.title = "Monitor Manager"
-
 # Dash CSS
 app.css.config.serve_locally = False
 
 # Loading screen CSS
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/brPBPO.css"})
-error_count = 1
-ip_count = 13
-delay_count = 3.2
 
-XH = []
-XH.append(0)
+XH = list()
 
-YH = []
-YH.append(0)
+YH = list()
+hdd = list()
 hdd = dict(
             data=[
                 dict(
@@ -88,11 +83,10 @@ hdd = dict(
                 margin=dict(l=40, r=0, t=40, b=30)
             )
         )
-X = []
-X.append(0)
+X = list()
 
-Y = []
-Y.append(0)
+Y = list()
+cpu = list()
 cpu = dict(
             data=[
                 dict(
@@ -114,6 +108,8 @@ cpu = dict(
                 margin=dict(l=40, r=0, t=40, b=30)
             )
         )
+data_c = list()
+data_h = list()
 
 app.layout = html.Div(className="main-container", children=[
     html.Nav(className="navbar sticky-top navbar-light bg-light", children=[
@@ -164,7 +160,7 @@ app.layout = html.Div(className="main-container", children=[
         ),
         #ONE ROW
         html.Div(className="row card" , children=[
-            html.H4(className="card-header", children=("Données")),
+            html.H4(className="card-header", children=("Performance")),
             html.Div(className="card-body", children=(
                 html.Div(className="number-row", children=[
                 html.Div(className="col-sm number-data", style={'color': 'red'}, children=(
@@ -231,7 +227,8 @@ last_monitor = "monitorme1.ddns.net"
     Input('interval-component', 'n_intervals'),
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
-    global last_monitor,X,Y,XH,YH
+    global last_monitor,X,Y,XH,YH,data_c,data_h
+
     monitor_info = monitor.split(';')
     if last_monitor != monitor_info[0]:
         X =[0]
@@ -249,7 +246,7 @@ def callback(n,monitor):
         ])
         data_table.append(t_item)
 
-    X.append(n)
+    X.append(len(X))
     Y.append(data[0])
     data_c = plotly.graph_objs.Scatter(
         x=list(X),
@@ -257,7 +254,7 @@ def callback(n,monitor):
         name="* of CPU use",
         mode='lines+markers'
     )
-    XH.append(n)
+    XH.append(len(XH))
     YH.append(data[1])
     data_h = plotly.graph_objs.Scatter(
         x=list(XH),
