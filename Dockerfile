@@ -13,4 +13,4 @@ RUN pip install coverage
 RUN pip install dash
 RUN pip install pandas
 COPY ./ /projet
-ENTRYPOINT ["python3", "/projet/interface.py"]
+#ENTRYPOINT ["python3", "/projet/interface.py"]
