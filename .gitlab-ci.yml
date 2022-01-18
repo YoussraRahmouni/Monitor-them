@@ -16,11 +16,11 @@ test-job0:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
     - python3 test/linter.py $files || echo $?
-test-job1:
-  stage: test
-  image: rahmouniyoussra/prjtinterface:latest
-  script:
-    - python3 -m unittest -v TestStringMethods.py
+#test-job1:
+#  stage: test
+#  image: rahmouniyoussra/prjtinterface:latest
+#  script:
+#   - python3 -m unittest -v TestStringMethods.py
 test-job2:
   stage: test
   image: rahmouniyoussra/prjtinterface:latest
@@ -67,7 +67,6 @@ delivery-job:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - docker build -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
-  when: manual 
     
 
     
