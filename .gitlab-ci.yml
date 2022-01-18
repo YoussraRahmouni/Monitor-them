@@ -67,7 +67,7 @@ delivery-job:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - docker build -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
-
+  when: manual 
     
 
     
