@@ -7,5 +7,5 @@ RUN pip install apache-log-parser
 RUN pip install dash
 RUN pip install pandas
 COPY ./ /projet
-EXPOSE 8050/tcp
+EXPOSE 8050
 ENTRYPOINT ["python3", "/projet/interface.py"]
