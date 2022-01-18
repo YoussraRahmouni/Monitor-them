@@ -48,7 +48,7 @@ delivery-job:
   variables:
     CI_REGISTRY: docker.io
     CI_REGISTRY_IMAGE: index.docker.io/$CI_REGISTRY_USER/project_image:latest
-    #DOCKER_HOST: tcp://docker:2375/
+    DOCKER_HOST: tcp://docker:2375/
     #DOCKER_DRIVER: overlay2
     #DOCKER_TLS_CERTDIR: ""
 
