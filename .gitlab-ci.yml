@@ -21,13 +21,13 @@ test-job0:
 #  image: rahmouniyoussra/prjtinterface:latest
 #  script:
 #   - python3 -m unittest -v TestStringMethods.py
-test-job2:
-  stage: test
-  image: rahmouniyoussra/prjtinterface:latest
-  script:
-    - coverage run --branch -m unittest -v TestStringMethods.py
-    - coverage report -m
-  coverage: '/TOTAL.*\s+(\d+\%)/'
+#test-job2:
+#  stage: test
+#  image: rahmouniyoussra/prjtinterface:latest
+#  script:
+#    - coverage run --branch -m unittest -v TestStringMethods.py
+#    - coverage report -m
+#  coverage: '/TOTAL.*\s+(\d+\%)/'
 #deploy-prod:
 #  stage: deploy
 #  script:
