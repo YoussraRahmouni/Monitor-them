@@ -52,10 +52,10 @@ delivery-job:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
 
-  #services:
-    #- name: docker:dind
-    #  entrypoint: ["env", "-u", "DOCKER_HOST"]
-    #  command: ["dockerd-entrypoint.sh"]
+  services:
+    - name: docker:dind
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
       
 
   before_script:
