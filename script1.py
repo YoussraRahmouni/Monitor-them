@@ -51,7 +51,7 @@ def getData(machine_name, fichier_log):
                 lt.getIPlist(machine_name,current_log_data,ip_list)
 
                 #incrémentation des pages visitée et du nombre de visites par pages
-                lt.getPageLists(current_log_data,diff_page_list,count_page_list,page_list)
+                lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
                 lt.getResponseTime(machine_name,n,response_time,client)
@@ -64,6 +64,9 @@ def getData(machine_name, fichier_log):
                 current_log=lt.sshcmd(log,client)
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
+
+            #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
+            page_list=getPageLists(count_page_list,diff_page_list)
 
             #Si une ligne ou plus a été parsé, calcul de la moyenne du temps de réponse
             if n>1 :
