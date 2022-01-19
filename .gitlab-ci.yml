@@ -1,34 +1,56 @@
 default:
   image: rahmouniyoussra/prjtinterface:latest
   script:
-    - export http_proxy=http://cache.univ-st-etienne.fr:3128/
-    - export https_proxy=http://cache.univ-st-etienne.fr:3128/
-    - export ftp_proxy=http://cache.univ-st-etienne.fr:3128/
+    - echo "Running default"
 stages:
   - build
   - test
-  - deploy
-test-job0:
+  - delivery
+test-lint:
   stage: test
   image: rahmouniyoussra/prjtinterface:latest
   script:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
     - python3 test/linter.py $files || echo $?
-test-job1:
+test-custom:
   stage: test
   image: rahmouniyoussra/prjtinterface:latest
   script:
-    - python3 -m unittest -v TestStringMethods.py
-test-job2:
+   - python3 -m unittest -v TestStringMethods.py
+test-coverage:
   stage: test
   image: rahmouniyoussra/prjtinterface:latest
   script:
     - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
-  coverage: '/TOTAL.*\s+(\d+\%)/'
-deploy-prod:
-  stage: deploy
+  coverage: '/TOTAL.*\s+(\d+\%)/'    
+delivery-job:
+  stage: delivery
+  image: docker:19.03.12
+
+  variables:
+    CI_REGISTRY: docker.io
+    CI_REGISTRY_IMAGE: index.docker.io/$CI_REGISTRY_USER/project_image:latest
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+
+  services:
+    - name: docker:dind
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - echo "Deployment- $CI_COMMIT_BRANCH branch."
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - feature
+
+    
+
+    
     
