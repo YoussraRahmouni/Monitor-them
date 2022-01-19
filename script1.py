@@ -80,4 +80,5 @@ def getData(machine_name, fichier_log):
         client.close()
         print(e)
         return["Error","Error","Error","Error","Error", 0]
+         
     
