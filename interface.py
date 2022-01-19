@@ -44,12 +44,17 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData("monitorme1.ddns.net", "access.log")
+data = getData("monitorme2.ddns.net", "other_vhosts_access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
 )
+
+app.enable_dev_tools(
+    dev_tools_ui=False,
+    dev_tools_serve_dev_bundles=False,
+    )
 
 app.title = "Monitor Manager"
 # Dash CSS

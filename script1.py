@@ -17,6 +17,9 @@ def getData(machine_name, fichier_log):
     client.connect(machine_name, 22, "interfadm", "Projet654!")
 
     try :
+        #si le log est vide on renvoie rien
+        if (lt.sshcmd("wc -l /var/log/apache2/"+fichier_log+"| awk 'FNR == 1 {print $1}'",client) == "0\n"):
+            return [0,0,[["-","-"]],"-","-",0]
         #initialisation des données de temps (parse les dernières entrées du log
         previous_date=datetime.now()-timedelta(minutes=5)
         parsed_last_log=lt.initlastlog(fichier_log,client)
@@ -51,7 +54,7 @@ def getData(machine_name, fichier_log):
                 lt.getIPlist(machine_name,current_log_data,ip_list)
 
                 #incrémentation des pages visitée et du nombre de visites par pages
-                lt.getPageLists(current_log_data,diff_page_list,count_page_list,page_list)
+                lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
                 lt.getResponseTime(machine_name,n,response_time,client)
@@ -65,6 +68,9 @@ def getData(machine_name, fichier_log):
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
 
+            #récupération des pages demandées et du nombre de requêtes correspondantes
+            page_list=lt.getPageLists(count_page_list,diff_page_list)
+
             #Si une ligne ou plus a été parsé, calcul de la moyenne du temps de réponse
             if n>1 :
                 AVG_response_time=sum(response_time)/(n-1)
@@ -77,5 +83,5 @@ def getData(machine_name, fichier_log):
     except Exception as e :
         client.close()
         print(e)
-        return["Error","Error","Error","Error","Error", 0]
+        return [0,0,[["-","-"]],"Error","Error",0]
     
