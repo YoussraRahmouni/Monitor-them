@@ -1,3 +1,4 @@
+[BASIC]
 disable=
     invalid-name,
     inconsistent-return-statements,
