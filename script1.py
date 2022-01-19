@@ -68,8 +68,8 @@ def getData(machine_name, fichier_log):
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
 
-            #récupération des pages demandées et du nombre de requêtes correspondantes
-            page_list=lt.getPageLists(count_page_list,diff_page_list)
+            #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
+            page_list=getPageLists(count_page_list,diff_page_list)
 
             #Si une ligne ou plus a été parsé, calcul de la moyenne du temps de réponse
             if n>1 :
