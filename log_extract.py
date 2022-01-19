@@ -43,21 +43,23 @@ class log_tool:
                 ip_list.append(current_log_data['remote_logname'])
 #        return ip_list
 
-    def getPageLists(self,current_log_data,diff_page_list,count_page_list,page_list):
+    def initpageLists(self,current_log_data,diff_page_list,count_page_list):
         log_page=current_log_data['request_first_line']
         if log_page in diff_page_list:
             count_page_list.append(log_page)
         if log_page not in diff_page_list:
             diff_page_list.append(log_page)
             count_page_list.append(log_page)
+
+    def getPageLists(self,count_page_list,diff_page_list):
         page_list=[0]*(len(diff_page_list))
         for i in range (0,len(diff_page_list)):
             c=0
             for j in range (0,len(count_page_list)):
                 if count_page_list[j]==diff_page_list[i]:
                     c+=1
-            page_list[i]=([diff_page_list[i],c])
-#        return [diff_page_list,count_page_list,page_list]
+            page_list[i]=[diff_page_list[i],c]
+        return page_list
 
     def getResponseTime(self,machine_name,n,response_time,client):
         responseN=self.sshcmd("cat /var/log/apache2/responsetime.log | tail -"+str(n)+" | awk 'NR=="+str(1)+"{print $11}'",client)

