@@ -9,3 +9,4 @@ RUN pip install pandas
 COPY ./ /projet
 EXPOSE 8050
 ENTRYPOINT ["python3", "/projet/interface.py"]
+
