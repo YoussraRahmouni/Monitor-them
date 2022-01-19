@@ -1,5 +1,0 @@
-disable=
-    invalid-name,
-    inconsistent-return-statements,
-    too-many-locals,
-    missing-docstring
