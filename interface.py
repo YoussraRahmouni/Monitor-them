@@ -44,7 +44,7 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData("monitorme.ddns.net", "access.log")
+data = getData("monitorme1.ddns.net", "access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
