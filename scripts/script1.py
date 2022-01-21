@@ -3,7 +3,7 @@ import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
 import time
-from log_extract import log_tool
+from scripts.log_extract import log_tool
 import json
 
 json_string = """
