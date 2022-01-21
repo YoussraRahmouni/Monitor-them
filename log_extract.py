@@ -35,13 +35,9 @@ class log_tool:
         return error
 
     def getIPlist(self, machine_name,current_log_data,ip_list):
-        if machine_name=="monitorme1.ddns.net":
-            if current_log_data['remote_host'] not in ip_list:
-                ip_list.append(current_log_data['remote_host'])
-        else:
-            if current_log_data['remote_logname'] not in ip_list:
-                ip_list.append(current_log_data['remote_logname'])
-#        return ip_list
+        if current_log_data['remote_host'] not in ip_list:
+            ip_list.append(current_log_data['remote_host'])
+
 
     def initpageLists(self,current_log_data,diff_page_list,count_page_list):
         log_page=current_log_data['request_first_line']
