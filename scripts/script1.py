@@ -94,7 +94,7 @@ def getData(machine_name, fichier_log):
                 error_count+=lt.getError(current_log_data['status'])
 
                 #incrémentation de la list des IP uniques
-                lt.getIPlist(machine_name,current_log_data,ip_list)
+                lt.getIPlist(machine_name,fichier_log,current_log_data,ip_list)
 
                 #incrémentation des pages visitée et du nombre de visites par pages
                 lt.initpageLists(current_log_data,diff_page_list,count_page_list)
