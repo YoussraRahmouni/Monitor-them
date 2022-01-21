@@ -9,9 +9,36 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output, State
-from script1 import getData
+from script1 import getData, getStatus
 import numpy
+import json
 
+json_string = """
+{
+    "machine1": {
+        "name": "monitorme1.ddns.net",
+        "log": "access.log",
+        "port": "port",
+        "username":"interfadm",
+        "password":"Projet654!"
+    },
+    "machine2" :{
+        "name": "monitorme2.ddns.net",
+        "log": "other_vhosts_access.log",
+        "port": "port",
+        "username":"interfadm",
+        "password":"Projet654!"
+    },
+    "machine3" :{
+        "name": "monitorme3.ddns.net",
+        "log": "other_vhosts_access.log",
+        "port": "port",
+        "username":"interfadm",
+        "password":"Projet654!"
+    }
+}
+"""
+json_file = json.loads(json_string)
 # external JavaScript files
 external_scripts = [
     {
@@ -140,7 +167,8 @@ app.layout = html.Div(className="main-container", children=[
         html.H3(style={"textAlign": "center"}, children="Overview"),
         html.Div(className="row card" , children=[
             html.H4(className="card-header", children=("My monitors")),
-            html.Div(className="card-body", children=(
+            html.Div(className="card-body",children=(
+                            html.Div(className="number-row",id="monitor-content")
             ))]
         )
     ]),
@@ -233,12 +261,22 @@ last_monitor = "monitorme1.ddns.net"
 @app.callback(
     Output('monitor-view', 'style'),
     Output('monitor-overview', 'style'),
+    Output('monitor-content', 'children'),
     Input('monitor-dropdown', 'value'))
 def callback_view(monitor):
+    monitor_list = []
     if monitor == "global":
-        return {'display' : 'none'},{'display' : 'block'}
+        for monitor in json_file:
+            status = getStatus(monitor)
+            item = html.Div(className="col-sm number-data", children=[
+                    html.Span(className="number-field", children=(json_file[monitor]["name"])),
+                    html.Span(className="number-type", children=(status))
+                ])
+            monitor_list.append(item)
+
+        return {'display' : 'none'},{'display' : 'block'}, monitor_list
     else:
-        return {'display' : 'block'},{'display' : 'none'}
+        return {'display' : 'block'},{'display' : 'none'}, monitor_list
 @app.callback(
     Output('live_error', 'children'),
     Output('live_ip', 'children'),
