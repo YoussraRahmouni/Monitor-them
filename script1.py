@@ -13,13 +13,13 @@ json_string = """
         "log": "access.log",
         "username":"interfadm",
         "password":"Projet654!"
-    }
+    },
     "machine2" :{
         "name": "monitorme2.ddns.net",
         "log": "other_vhosts_access.log",
         "username":"interfadm",
         "password":"Projet654!"
-    }
+    },
     "machine3" :{
         "name": "monitorme3.ddns.net",
         "log": "other_vhosts_access.log",
@@ -39,7 +39,7 @@ def getData(machine_name, fichier_log):
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-    client.connect(machine_name, 22, "interfadm", "Projet654!")
+    client.connect(machine_name, 22, "interfadm", "Projet654!", banner_timeout=500)
 
     try :
         #si le log est vide on renvoie rien
@@ -109,4 +109,4 @@ def getData(machine_name, fichier_log):
         client.close()
         print(e)
         return [0,0,[["-","-"]],"Error","Error",0]
-    
+

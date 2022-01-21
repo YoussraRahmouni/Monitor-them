@@ -125,6 +125,7 @@ app.layout = html.Div(className="main-container", children=[
         dcc.Dropdown(
             id='monitor-dropdown',
             options=[
+                {'label': 'Overview', 'value': 'global'},
                 {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;access.log'},
                 {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
                 {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
@@ -135,7 +136,15 @@ app.layout = html.Div(className="main-container", children=[
         ),
         ])
     ]),
-    html.Div(className="container content", children=[
+    html.Div(className="container content", id="monitor-overview", children=[
+        html.H3(style={"textAlign": "center"}, children="Overview"),
+        html.Div(className="row card" , children=[
+            html.H4(className="card-header", children=("My monitors")),
+            html.Div(className="card-body", children=(
+            ))]
+        )
+    ]),
+    html.Div(className="container content",id="monitor-view", children=[
         dcc.Loading(
             id="loading-1",
             type="default",
@@ -222,6 +231,15 @@ app.layout = html.Div(className="main-container", children=[
 ])
 last_monitor = "monitorme1.ddns.net"
 @app.callback(
+    Output('monitor-view', 'style'),
+    Output('monitor-overview', 'style'),
+    Input('monitor-dropdown', 'value'))
+def callback_view(monitor):
+    if monitor == "global":
+        return {'display' : 'none'},{'display' : 'block'}
+    else:
+        return {'display' : 'block'},{'display' : 'none'}
+@app.callback(
     Output('live_error', 'children'),
     Output('live_ip', 'children'),
     Output('live_delay', 'children'),
@@ -233,8 +251,10 @@ last_monitor = "monitorme1.ddns.net"
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
     global last_monitor,X,Y,XH,YH,data_c,data_h
-
-    monitor_info = monitor.split(';')
+    if monitor == "global":
+        monitor_info = ["monitorme1.ddns.net", "access.log"]
+    else:
+        monitor_info = monitor.split(';')
     if last_monitor != monitor_info[0]:
         X =[0]
         Y=[]
