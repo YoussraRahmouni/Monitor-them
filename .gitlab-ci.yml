@@ -1,26 +1,26 @@
-stages:
-  - build
-  - test
-  - delivery
 default:
   image: group8tse/pipeline_image:latest
   script:
     - echo "Running default"
+stages:
+  - build
+  - test
+  - delivery
 test-lint:
   stage: test
-  #image: group8tse/pipeline_image:latest
+  image: group8tse/pipeline_image:latest
   script:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
     - python3 test/linter.py $files || echo $?
 test-custom:
   stage: test
-  #image: group8tse/pipeline_image:latest
+  image: group8tse/pipeline_image:latest
   script:
    - python3 -m unittest -v TestStringMethods.py
 test-coverage:
   stage: test
-  #image: group8tse/pipeline_image:latest
+  image: group8tse/pipeline_image:latest
   script:
     - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
