@@ -12,7 +12,7 @@ test-lint:
 test-custom:
   stage: test
   script:
-   - python3 -m unittest -v /test
+   - python3 -m unittest -v ../test/TestStringMethods.py
 test-coverage:
   stage: test
   script:
