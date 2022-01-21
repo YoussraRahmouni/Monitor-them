@@ -9,7 +9,7 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output, State
-from script1 import getData
+from scripts/script1 import getData
 import numpy
 
 # external JavaScript files
