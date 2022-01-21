@@ -1,26 +1,20 @@
-default:
-  image: rahmouniyoussra/prjtinterface:latest
-  script:
-    - echo "Running default"
+image: group8tse/pipeline_image:latest
 stages:
   - build
   - test
   - delivery
 test-lint:
   stage: test
-  image: rahmouniyoussra/prjtinterface:latest
   script:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
     - python3 test/linter.py $files || echo $?
 test-custom:
   stage: test
-  image: rahmouniyoussra/prjtinterface:latest
   script:
    - python3 -m unittest -v TestStringMethods.py
 test-coverage:
   stage: test
-  image: rahmouniyoussra/prjtinterface:latest
   script:
     - coverage run --branch -m unittest -v TestStringMethods.py
     - coverage report -m
@@ -45,10 +39,10 @@ delivery-job:
 
   script:
     - echo "Deployment- $CI_COMMIT_BRANCH branch."
-    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker build --cache-from "$CI_REGISTRY_IMAGE" -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
-  only:
-    - feature
+  #only:
+  #  - feature
 
     
 

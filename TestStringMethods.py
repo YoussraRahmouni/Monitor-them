@@ -6,7 +6,7 @@ class TestStringMethods(unittest.TestCase):
     def test_parser1(self):
         lt=log_tool()
         template = '127.1.1.1 - - [09/Jan/2011:18:22:48 +0100] "GET / HTTP/1.1" 302 243 "-" "Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.13) Gecko/20101206 Ubuntu/10.04 (lucid) Firefox/3.6.13"'
-        self.assertEqual(lt.log_parsing(template)['remote_host'], '127.1.1.1')
+        self.assertEqual(lt.log_parsing(template)['remote_host'], '127.1.1.1')  
         self.assertEqual(lt.log_parsing(template)['status'], '302')
         self.assertEqual(lt.log_parsing(template)['time_received'], '[09/Jan/2011:18:22:48 +0100]')
         self.assertEqual(lt.log_parsing(template)['request_method'], 'GET')
@@ -47,10 +47,10 @@ class TestStringMethods(unittest.TestCase):
         parsed_log3=lt.log_parsing(log3)
         parsed_log4=lt.log_parsing(log4)
         ip_list=[]
-        lt.getIPlist("monitorme2.ddns.net",parsed_log1,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log2,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log3,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log4,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log1,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log2,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log3,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log4,ip_list)
         self.assertEqual(len(ip_list),3)
 
     def test_pagelist(self):
