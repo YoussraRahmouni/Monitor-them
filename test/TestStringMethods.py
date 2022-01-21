@@ -1,5 +1,5 @@
 import unittest
-from group8.scripts.log_extract import log_tool
+from scripts.log_extract import log_tool
 
 class TestStringMethods(unittest.TestCase):
 
