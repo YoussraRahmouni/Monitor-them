@@ -100,7 +100,7 @@ def getData(machine_name, fichier_log):
                 lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
-                lt.getResponseTime(machine_name,n,response_time,client)
+                lt.getResponseTime(machine_name,fichier_log,n,response_time,client)
 
                 #Changement de ligne de log à parser
                 n+=1

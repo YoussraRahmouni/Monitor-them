@@ -47,10 +47,10 @@ class TestStringMethods(unittest.TestCase):
         parsed_log3=lt.log_parsing(log3)
         parsed_log4=lt.log_parsing(log4)
         ip_list=[]
-        lt.getIPlist("monitorme2.ddns.net",parsed_log1,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log2,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log3,ip_list)
-        lt.getIPlist("monitorme2.ddns.net",parsed_log4,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log1,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log2,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log3,ip_list)
+        lt.getIPlist("monitorme2.ddns.net","other_vhosts_access.log",parsed_log4,ip_list)
         self.assertEqual(len(ip_list),3)
 
     def test_pagelist(self):
