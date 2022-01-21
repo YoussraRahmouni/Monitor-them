@@ -12,11 +12,11 @@ test-lint:
 test-custom:
   stage: test
   script:
-   - python3 -m unittest -v TestStringMethods.py
+   - python3 -m unittest -v test/TestStringMethods.py
 test-coverage:
   stage: test
   script:
-    - coverage run --branch -m unittest -v TestStringMethods.py
+    - coverage run --branch -m unittest -v test/TestStringMethods.py
     - coverage report -m
   coverage: '/TOTAL.*\s+(\d+\%)/'    
 delivery-job:
