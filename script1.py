@@ -11,29 +11,52 @@ json_string = """
     "machine1": {
         "name": "monitorme1.ddns.net",
         "log": "access.log",
+        "port": "port",
         "username":"interfadm",
         "password":"Projet654!"
     },
     "machine2" :{
         "name": "monitorme2.ddns.net",
         "log": "other_vhosts_access.log",
+        "port": "port",
         "username":"interfadm",
         "password":"Projet654!"
     },
     "machine3" :{
         "name": "monitorme3.ddns.net",
         "log": "other_vhosts_access.log",
+        "port": "port",
         "username":"interfadm",
         "password":"Projet654!"
     }
 }
 """
-data = json.loads(json_string)
+json_file = json.loads(json_string)
+
+def getStatus(machine_name):
+    try :
+        # test de la connexion ssh
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+        client.connect(machine_name, 22, "interfadm", "Projet654!",timeout=10)
+        client.close()
+        return 1
+    except Exception :
+        return 0
 
 def getData(machine_name, fichier_log):
 
     #instanciation de la classe log_tool
     lt=log_tool()
+    try :
+        # initialisation de la connexion ssh
+        client = paramiko.SSHClient()
+        client.load_system_host_keys()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+        client.connect(machine_name, 22, "interfadm", "Projet654!",timeout=10)
+    except Exception :
+        return [0,0,[["-","-"]],"-","-",0,0]
 
     # initialisation de la connexion ssh
     client = paramiko.SSHClient()
@@ -41,10 +64,11 @@ def getData(machine_name, fichier_log):
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
     client.connect(machine_name, 22, "interfadm", "Projet654!", banner_timeout=500)
 
+
     try :
         #si le log est vide on renvoie rien
         if (lt.sshcmd("wc -l /var/log/apache2/"+fichier_log+"| awk 'FNR == 1 {print $1}'",client) == "0\n"):
-            return [0,0,[["-","-"]],"-","-",0]
+            return [0,0,[["-","-"]],"-","-",0,1]
         #initialisation des données de temps (parse les dernières entrées du log
         previous_date=datetime.now()-timedelta(minutes=5)
         parsed_last_log=lt.initlastlog(fichier_log,client)
@@ -82,7 +106,7 @@ def getData(machine_name, fichier_log):
                 lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
-                lt.getResponseTime(machine_name,n,response_time,client)
+                lt.getResponseTime(machine_name,fichier_log,n,response_time,client)
 
                 #Changement de ligne de log à parser
                 n+=1
@@ -95,6 +119,8 @@ def getData(machine_name, fichier_log):
 
             #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
             page_list=lt.getPageLists(count_page_list,diff_page_list)
+            if not page_list:
+                page_list[["-","-"]]
 
             #Si une ligne ou plus a été parsé, calcul de la moyenne du temps de réponse
             if n>1 :
@@ -108,5 +134,5 @@ def getData(machine_name, fichier_log):
     except Exception as e :
         client.close()
         print(e)
-        return [0,0,[["-","-"]],"Error","Error",0]
+        return [0,0,[["-","-"]],"Error","Error",0,1]
 

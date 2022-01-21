@@ -34,9 +34,14 @@ class log_tool:
             error=1
         return error
 
-    def getIPlist(self, machine_name,current_log_data,ip_list):
-        if current_log_data['remote_host'] not in ip_list:
-            ip_list.append(current_log_data['remote_host'])
+    def getIPlist(self, machine_name,fichier_log,current_log_data,ip_list):
+        if (fichier_log=="access.log"):
+            if current_log_data['remote_host'] not in ip_list:
+                ip_list.append(current_log_data['remote_host'])
+        if (fichier_log=="other_vhosts_access.log"):
+            if current_log_data['remote_logname'] not in ip_list:
+                ip_list.append(current_log_data['remote_logname'])
+
 
 
     def initpageLists(self,current_log_data,diff_page_list,count_page_list):
