@@ -3,7 +3,7 @@ import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
 import time
-from log_extract import log_tool
+from scripts.log_extract import log_tool
 import json
 
 json_string = """
@@ -110,6 +110,7 @@ def getData(machine_name, fichier_log):
                 current_log=lt.sshcmd(log,client)
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
+
 
             #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
             page_list=lt.getPageLists(count_page_list,diff_page_list)
