@@ -4,31 +4,6 @@ from pprint import pprint
 from datetime import datetime, timedelta
 import time
 from log_extract import log_tool
-import json
-
-json_string = """
-{
-    "machine1": {
-        "name": "monitorme1.ddns.net",
-        "log": "access.log",
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "machine2" :{
-        "name": "monitorme2.ddns.net",
-        "log": "other_vhosts_access.log",
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "machine3" :{
-        "name": "monitorme3.ddns.net",
-        "log": "other_vhosts_access.log",
-        "username":"interfadm",
-        "password":"Projet654!"
-    }
-}
-"""
-data = json.loads(json_string)
 
 def getData(machine_name, fichier_log):
 
@@ -93,9 +68,13 @@ def getData(machine_name, fichier_log):
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
 
-
-            #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
+<<<<<<< HEAD
+            #récupération des pages demandées et du nombre de requêtes correspondantes
             page_list=lt.getPageLists(count_page_list,diff_page_list)
+=======
+            #Récupération des différentes pages demandées et le nombre de requêtes correspondantes
+            page_list=getPageLists(count_page_list,diff_page_list)
+>>>>>>> 01141b376cf12d8ecb1a2a891b73f7298a3428ed
 
             #Si une ligne ou plus a été parsé, calcul de la moyenne du temps de réponse
             if n>1 :
@@ -109,5 +88,10 @@ def getData(machine_name, fichier_log):
     except Exception as e :
         client.close()
         print(e)
+<<<<<<< HEAD
         return [0,0,[["-","-"]],"Error","Error",0]
     
+=======
+        return["Error","Error","Error","Error","Error", 0]
+    
+>>>>>>> 01141b376cf12d8ecb1a2a891b73f7298a3428ed
