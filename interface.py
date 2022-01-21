@@ -276,4 +276,4 @@ def callback(n,monitor):
     return data[3], data[4],round(data[5],0), data_cpu, data_hdd,data_table,name
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host="127.0.0.1", port=8050)
+    app.run_server(debug=True, host="0.0.0.0", port=8050)
