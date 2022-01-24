@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\scripts"
+    "\\scripts",
+    "\\test"
   ],
-  "SelectedNode": "\\scripts\\script1.py",
+  "SelectedNode": "\\interface.py",
   "PreviewInSolutionExplorer": false
 }
