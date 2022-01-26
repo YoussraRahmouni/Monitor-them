@@ -244,9 +244,14 @@ def callback_view(monitor):
         for monitor in json_file:
             if monitor != "Overview":
                 status = getStatus(monitor)
+                if status[0] == "Offline":
+                    status_img = html.Span(className="dot offline")
+                else :
+                    status_img = html.Span(className="dot online")
+
                 item = html.Div(className="col-sm number-data", children=[
                         html.Span(className="number-field monitor-name", children=(monitor)),
-                        html.Span(className="number-type", children=(status[0]))
+                        html.Span(className="number-type status-row", children=[status_img,status[0]])
                     ])
                 monitor_list.append(item)
 
