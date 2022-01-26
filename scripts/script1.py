@@ -6,38 +6,14 @@ import time
 from scripts.log_extract import log_tool
 import json
 
-json_string = """
-{
-    "Overview":{},
-    "monitorme1": {
-        "name": "monitorme1.ddns.net",
-        "log": "access.log",
-        "port": 22,
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "monitorme2" :{
-        "name": "monitorme2.ddns.net",
-        "log": "other_vhosts_access.log",
-        "port": 22,
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "monitorme3" :{
-        "name": "monitorme3.ddns.net",
-        "log": "other_vhosts_access.log",
-        "port": 22,
-        "username":"interfadm",
-        "password":"Projet654!"
-    }
-}
-"""
+f = open('./monitors.json')
 
-json_file = json.loads(json_string)
+json_file = json.load(f)
 
+f.close()
 
 def getMonitors() :
-    return json_string
+    return json_file
 
 def getStatus(machine_name):
     try :
