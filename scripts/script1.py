@@ -8,44 +8,51 @@ import json
 
 json_string = """
 {
-    "machine1": {
+    "monitorme1": {
         "name": "monitorme1.ddns.net",
         "log": "access.log",
-        "port": "port",
+        "port": 22,
         "username":"interfadm",
         "password":"Projet654!"
     },
-    "machine2" :{
+    "monitorme2" :{
         "name": "monitorme2.ddns.net",
         "log": "other_vhosts_access.log",
-        "port": "port",
+        "port": 22,
         "username":"interfadm",
         "password":"Projet654!"
     },
-    "machine3" :{
+    "monitorme3" :{
         "name": "monitorme3.ddns.net",
         "log": "other_vhosts_access.log",
-        "port": "port",
+        "port": 22,
         "username":"interfadm",
         "password":"Projet654!"
     }
 }
 """
+
 json_file = json.loads(json_string)
+
+
+def getMonitors() :
+    return json_string
 
 def getStatus(machine_name):
     try :
+        lt=log_tool()
         # test de la connexion ssh
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-        client.connect(machine_name, 22, "interfadm", "Projet654!",timeout=10)
+        client.connect(machine_name["name"], machine_name["port"], machine_name["username"], machine_name["password"],timeout=10)
+        CPUinfo = lt.getCPUinfo(client)
         client.close()
-        return 1
+        return "Online",CPUinfo
     except Exception :
-        return 0
+        return "Offline","-"
 
-def getData(machine_name, fichier_log):
+def getData(machine_name):
 
     #instanciation de la classe log_tool
     lt=log_tool()
@@ -54,7 +61,7 @@ def getData(machine_name, fichier_log):
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-        client.connect(machine_name, 22, "interfadm", "Projet654!",timeout=10)
+        client.connect(machine_name["name"], machine_name["port"], machine_name["username"], machine_name["password"],timeout=10)
     except Exception :
         return [0,0,[["-","-"]],"-","-",0,0]
 
@@ -67,11 +74,11 @@ def getData(machine_name, fichier_log):
 
     try :
         #si le log est vide on renvoie rien
-        if (lt.sshcmd("wc -l /var/log/apache2/"+fichier_log+"| awk 'FNR == 1 {print $1}'",client) == "0\n"):
+        if (lt.sshcmd("wc -l /var/log/apache2/"+machine_name["log"]+"| awk 'FNR == 1 {print $1}'",client) == "0\n"):
             return [0,0,[["-","-"]],"-","-",0,1]
         #initialisation des données de temps (parse les dernières entrées du log
         previous_date=datetime.now()-timedelta(minutes=5)
-        parsed_last_log=lt.initlastlog(fichier_log,client)
+        parsed_last_log=lt.initlastlog(machine_name["log"],client)
         last_line_date=parsed_last_log["time_received_datetimeobj"]
 
         #initialisation donnée
@@ -92,7 +99,7 @@ def getData(machine_name, fichier_log):
             while log_date > previous_date:
 
                 #Selection de la ligne de log a parser
-                log="tail -"+str(n)+" /var/log/apache2/"+fichier_log+" | head -1"
+                log="tail -"+str(n)+" /var/log/apache2/"+machine_name["log"]+" | head -1"
                 current_log=lt.sshcmd(log,client)
                 current_log_data=lt.log_parsing(current_log)
 
@@ -100,19 +107,19 @@ def getData(machine_name, fichier_log):
                 error_count+=lt.getError(current_log_data['status'])
 
                 #incrémentation de la list des IP uniques
-                lt.getIPlist(machine_name,fichier_log,current_log_data,ip_list)
+                lt.getIPlist(machine_name["name"],machine_name["log"],current_log_data,ip_list)
 
                 #incrémentation des pages visitée et du nombre de visites par pages
                 lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
-                lt.getResponseTime(machine_name,n,response_time,client)
+                lt.getResponseTime(machine_name["name"],n,response_time,client)
 
                 #Changement de ligne de log à parser
                 n+=1
 
                 #Mise à jour de la ligne de log parsé pour le test de la boucle while
-                log="tail -"+str(n)+" /var/log/apache2/"+fichier_log+" | head -1"
+                log="tail -"+str(n)+" /var/log/apache2/"+machine_name["log"]+" | head -1"
                 current_log=lt.sshcmd(log,client)
                 current_log_data=lt.log_parsing(current_log)#Dictionnary
                 log_date=current_log_data["time_received_datetimeobj"]#timestamp
@@ -137,3 +144,4 @@ def getData(machine_name, fichier_log):
         print(e)
         return [0,0,[["-","-"]],"Error","Error",0,1]
 
+getStatus(json_file["monitorme1"])
