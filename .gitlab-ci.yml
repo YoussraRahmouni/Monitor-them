@@ -41,8 +41,8 @@ delivery-job:
     - echo "Deployment- $CI_COMMIT_BRANCH branch."
     - docker build --cache-from "$CI_REGISTRY_IMAGE" -t "$CI_REGISTRY_IMAGE" .
     - docker push "$CI_REGISTRY_IMAGE"
-  #only:
-  #  - feature
+  only:
+    - master
 
     
 
