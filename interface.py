@@ -9,9 +9,14 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output, State
-from scripts.script1 import getData
-import numpy
+from scripts.script1 import getData, getStatus
+from scripts.script1 import getMonitors
 
+import numpy
+import json
+
+json_string = getMonitors()
+json_file = json.loads(json_string)
 # external JavaScript files
 external_scripts = [
     {
@@ -44,7 +49,7 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData("monitorme1.ddns.net", "access.log")
+data = getData(getMonitors()[1])
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
@@ -125,23 +130,30 @@ app.layout = html.Div(className="main-container", children=[
         dcc.Dropdown(
             id='monitor-dropdown',
             options=[
-                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;access.log'},
-                {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
-                {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
+                 {'label':monitor, 'value': monitor} for monitor in json_file
             ],
-            value='monitorme1.ddns.net;access.log',
+            value='Overview',
             clearable=False,
             searchable=False
         ),
         ])
     ]),
-    html.Div(className="container content", children=[
+    html.Div(className="container content", id="monitor-overview", children=[
+        html.H3(style={"textAlign": "center"}, children="Overview"),
+        html.Div(className="row card" , children=[
+            html.H4(className="card-header", children=("My monitors")),
+            html.Div(className="card-body",children=(
+                            html.Div(className="number-row",id="monitor-content")
+            ))]
+        )
+    ]),
+    html.Div(className="container content",id="monitor-view", children=[
         dcc.Loading(
             id="loading-1",
             type="default",
             fullscreen=True
         ),
-        html.H3(id="name", children="Monitor : monitorme1.ddns.net"),
+        html.H3(id="name", children="Monitor : monitorme1"),
         #ONE ROW
         html.Div(className="row card" , children=[
             html.H4(className="card-header", children=("Données")),
@@ -220,7 +232,32 @@ app.layout = html.Div(className="main-container", children=[
         n_intervals=0
     )
 ])
-last_monitor = "monitorme1.ddns.net"
+last_monitor = "monitorme1"
+@app.callback(
+    Output('monitor-view', 'style'),
+    Output('monitor-overview', 'style'),
+    Output('monitor-content', 'children'),
+    Input('monitor-dropdown', 'value'))
+def callback_view(monitor):
+    monitor_list = []
+    if monitor == "Overview":
+        for monitor in json_file:
+            if monitor != "Overview":
+                status = getStatus(monitor)
+                if status[0] == "Offline":
+                    status_img = html.Span(className="dot offline")
+                else :
+                    status_img = html.Span(className="dot online")
+
+                item = html.Div(className="col-sm number-data", children=[
+                        html.Span(className="number-field monitor-name", children=(monitor)),
+                        html.Span(className="number-type status-row", children=[status_img,status[0]])
+                    ])
+                monitor_list.append(item)
+
+        return {'display' : 'none'},{'display' : 'block'}, monitor_list
+    else:
+        return {'display' : 'block'},{'display' : 'none'}, monitor_list
 @app.callback(
     Output('live_error', 'children'),
     Output('live_ip', 'children'),
@@ -233,15 +270,18 @@ last_monitor = "monitorme1.ddns.net"
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
     global last_monitor,X,Y,XH,YH,data_c,data_h
+    if monitor == "Overview":
+        monitor_info = "monitorme1"
+    else:
+        monitor_info = monitor
 
-    monitor_info = monitor.split(';')
-    if last_monitor != monitor_info[0]:
+    if last_monitor != monitor_info:
         X =[0]
         Y=[]
         XH=[0]
         YH=[]
-        last_monitor=monitor_info[0]
-    data = getData(monitor_info[0], monitor_info[1])
+        last_monitor=monitor_info
+    data = getData(monitor_info)
     data_table = []
     for item in data[2]:
         t_item = html.Tr(children=[
@@ -271,7 +311,7 @@ def callback(n,monitor):
                 'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[0,numpy.amax(numpy.array(Y).astype(float))+10]))}
     data_hdd = {'data': [data_h],
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[0,numpy.amax(numpy.array(YH).astype(float))+10]))}
-    name = "Monitor : " + monitor_info[0]
+    name = "Monitor : " + monitor_info
 
     return data[3], data[4],round(data[5],0), data_cpu, data_hdd,data_table,name
 

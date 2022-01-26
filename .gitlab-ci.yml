@@ -1,8 +1,12 @@
 image: group8tse/pipeline_image:latest
 stages:
-  - build
+  - compile
   - test
   - delivery
+compile-job:
+  stage: compile
+  script:
+    - python3 -m compileall .
 test-lint:
   stage: test
   needs: ["test-custom"]
@@ -12,7 +16,7 @@ test-lint:
     - python3 test/linter.py $files || echo $?
 test-custom:
   stage: test
-  needs: []
+  needs: ["compile-job"]
   script:
    - python3 -m unittest -v test/TestStringMethods.py
 test-coverage:
