@@ -6,9 +6,6 @@ stages:
 compile-job:
   stage: compile
   script:
-    - echo "m"
-    - echo "m"
-    - echo "m"
     - python3 -m compileall .
 test-lint:
   stage: test
