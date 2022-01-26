@@ -15,33 +15,7 @@ from scripts.script1 import getMonitors
 import numpy
 import json
 
-json_string = """
-{
-    "Overview":{
-    },
-    "monitorme1": {
-        "name": "monitorme1.ddns.net",
-        "log": "access.log",
-        "port": "port",
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "monitorme2" :{
-        "name": "monitorme2.ddns.net",
-        "log": "other_vhosts_access.log",
-        "port": "port",
-        "username":"interfadm",
-        "password":"Projet654!"
-    },
-    "monitorme3" :{
-        "name": "monitorme3.ddns.net",
-        "log": "other_vhosts_access.log",
-        "port": "port",
-        "username":"interfadm",
-        "password":"Projet654!"
-    }
-}
-"""
+json_string = getMonitors()
 json_file = json.loads(json_string)
 # external JavaScript files
 external_scripts = [
@@ -75,7 +49,7 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData(getMonitors()[0])
+data = getData(getMonitors()[1])
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
@@ -179,7 +153,7 @@ app.layout = html.Div(className="main-container", children=[
             type="default",
             fullscreen=True
         ),
-        html.H3(id="name", children="Monitor : monitorme1.ddns.net"),
+        html.H3(id="name", children="Monitor : monitorme1"),
         #ONE ROW
         html.Div(className="row card" , children=[
             html.H4(className="card-header", children=("Données")),
@@ -258,7 +232,7 @@ app.layout = html.Div(className="main-container", children=[
         n_intervals=0
     )
 ])
-last_monitor = "monitorme1.ddns.net"
+last_monitor = "monitorme1"
 @app.callback(
     Output('monitor-view', 'style'),
     Output('monitor-overview', 'style'),
@@ -268,12 +242,13 @@ def callback_view(monitor):
     monitor_list = []
     if monitor == "Overview":
         for monitor in json_file:
-            status = getStatus(json_file[monitor]["name"])
-            item = html.Div(className="col-sm number-data", children=[
-                    html.Span(className="number-field monitor-name", children=(json_file[monitor]["name"])),
-                    html.Span(className="number-type", children=(status))
-                ])
-            monitor_list.append(item)
+            if monitor != "Overview":
+                status = getStatus(monitor)
+                item = html.Div(className="col-sm number-data", children=[
+                        html.Span(className="number-field monitor-name", children=(monitor)),
+                        html.Span(className="number-type", children=(status[0]))
+                    ])
+                monitor_list.append(item)
 
         return {'display' : 'none'},{'display' : 'block'}, monitor_list
     else:
@@ -291,16 +266,17 @@ def callback_view(monitor):
 def callback(n,monitor):
     global last_monitor,X,Y,XH,YH,data_c,data_h
     if monitor == "Overview":
-        monitor_info = ["monitorme1.ddns.net", "access.log"]
+        monitor_info = "monitorme1"
     else:
-        monitor_info = monitor.split(';')
-    if last_monitor != monitor_info[0]:
+        monitor_info = monitor
+
+    if last_monitor != monitor_info:
         X =[0]
         Y=[]
         XH=[0]
         YH=[]
-        last_monitor=monitor_info[0]
-    data = getData(monitor_info[0], monitor_info[1])
+        last_monitor=monitor_info
+    data = getData(monitor_info)
     data_table = []
     for item in data[2]:
         t_item = html.Tr(children=[
@@ -330,7 +306,7 @@ def callback(n,monitor):
                 'layout':go.Layout(xaxis=dict(range=[0,max(X)]),yaxis=dict(range=[0,numpy.amax(numpy.array(Y).astype(float))+10]))}
     data_hdd = {'data': [data_h],
                 'layout':go.Layout(xaxis=dict(range=[0,max(XH)]),yaxis=dict(range=[0,numpy.amax(numpy.array(YH).astype(float))+10]))}
-    name = "Monitor : " + monitor_info[0]
+    name = "Monitor : " + monitor_info
 
     return data[3], data[4],round(data[5],0), data_cpu, data_hdd,data_table,name
 
