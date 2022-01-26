@@ -5,16 +5,19 @@ stages:
   - delivery
 test-lint:
   stage: test
+  needs: ["test-custom"]
   script:
     - files=$(git diff-tree --no-commit-id --name-only -r $CI_COMMIT_SHA)
     - echo $files
     - python3 test/linter.py $files || echo $?
 test-custom:
   stage: test
+  needs: []
   script:
    - python3 -m unittest -v test/TestStringMethods.py
 test-coverage:
   stage: test
+  needs: ["test-custom"]
   script:
     - coverage run --branch -m unittest -v test/TestStringMethods.py
     - coverage report -m
