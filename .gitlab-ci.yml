@@ -1,8 +1,12 @@
 image: group8tse/pipeline_image:latest
 stages:
-  - build
+  - compile
   - test
   - delivery
+compile-job:
+  stage: compile
+  script:
+    - python3 -m compileall .
 test-lint:
   stage: test
   needs: ["test-custom"]
