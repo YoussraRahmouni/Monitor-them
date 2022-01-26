@@ -1,0 +1,75 @@
+.main-container {
+    height: 100vh;
+}
+
+#navb {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#monitor-dropdown {
+    width: inherit;
+    max-width: 200px;
+    text-align: center;
+}
+
+#name {
+    text-align: center;
+}
+
+.content {
+    background-color: "#6c757d";
+    margin-top: 20px;
+    height: auto;
+    padding: 10px;
+}
+
+.head {
+    background-color: gray;
+}
+
+.h1-logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 10%;
+    margin-right: 10px;
+    min-width: 52px;
+}
+
+.row {
+    margin-top: 20px;
+}
+
+.number-row {
+    display: flex;
+    align-items: center;
+}
+
+.number-data {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.number-field {
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+.number-type {
+    font-size: 1.5rem;
+}
+
+footer {
+    margin-top: 15px;
+    width: 100vw;
+}
+
+td {
+    word-break: break-word;
+}
