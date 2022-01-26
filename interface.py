@@ -9,7 +9,7 @@ import plotly
 import plotly.graph_objs as go
 import pandas as pd
 from dash.dependencies import Input, Output, State
-from script1 import getData
+from scripts.script1 import getData
 import numpy
 
 # external JavaScript files
@@ -44,7 +44,7 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData("monitorme.ddns.net", "access.log")
+data = getData("monitorme1.ddns.net", "access.log")
 
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,

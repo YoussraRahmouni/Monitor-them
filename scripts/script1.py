@@ -3,7 +3,7 @@ import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
 import time
-from log_extract import log_tool
+from scripts.log_extract import log_tool
 import json
 
 json_string = """
@@ -94,13 +94,13 @@ def getData(machine_name, fichier_log):
                 error_count+=lt.getError(current_log_data['status'])
 
                 #incrémentation de la list des IP uniques
-                lt.getIPlist(machine_name,current_log_data,ip_list)
+                lt.getIPlist(machine_name,fichier_log,current_log_data,ip_list)
 
                 #incrémentation des pages visitée et du nombre de visites par pages
                 lt.initpageLists(current_log_data,diff_page_list,count_page_list)
 
                 #incrémentation de la liste des temps de réponses
-                lt.getResponseTime(machine_name,fichier_log,n,response_time,client)
+                lt.getResponseTime(machine_name,n,response_time,client)
 
                 #Changement de ligne de log à parser
                 n+=1
