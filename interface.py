@@ -15,21 +15,23 @@ import json
 
 json_string = """
 {
-    "machine1": {
+    "Overview":{
+    },
+    "monitorme1": {
         "name": "monitorme1.ddns.net",
         "log": "access.log",
         "port": "port",
         "username":"interfadm",
         "password":"Projet654!"
     },
-    "machine2" :{
+    "monitorme2" :{
         "name": "monitorme2.ddns.net",
         "log": "other_vhosts_access.log",
         "port": "port",
         "username":"interfadm",
         "password":"Projet654!"
     },
-    "machine3" :{
+    "monitorme3" :{
         "name": "monitorme3.ddns.net",
         "log": "other_vhosts_access.log",
         "port": "port",
@@ -152,12 +154,9 @@ app.layout = html.Div(className="main-container", children=[
         dcc.Dropdown(
             id='monitor-dropdown',
             options=[
-                {'label': 'Overview', 'value': 'global'},
-                {'label': 'monitorme1', 'value': 'monitorme1.ddns.net;access.log'},
-                {'label': 'monitorme2', 'value': 'monitorme2.ddns.net;other_vhosts_access.log'},
-                {'label': 'monitorme3', 'value': 'monitorme3.ddns.net;other_vhosts_access.log'}
+                 {'label':monitor, 'value': monitor} for monitor in json_file
             ],
-            value='monitorme1.ddns.net;access.log',
+            value='Overview',
             clearable=False,
             searchable=False
         ),
@@ -265,11 +264,11 @@ last_monitor = "monitorme1.ddns.net"
     Input('monitor-dropdown', 'value'))
 def callback_view(monitor):
     monitor_list = []
-    if monitor == "global":
+    if monitor == "Overview":
         for monitor in json_file:
-            status = getStatus(monitor)
+            status = getStatus(json_file[monitor]["name"])
             item = html.Div(className="col-sm number-data", children=[
-                    html.Span(className="number-field", children=(json_file[monitor]["name"])),
+                    html.Span(className="number-field monitor-name", children=(json_file[monitor]["name"])),
                     html.Span(className="number-type", children=(status))
                 ])
             monitor_list.append(item)
@@ -289,7 +288,7 @@ def callback_view(monitor):
     Input('monitor-dropdown', 'value'))
 def callback(n,monitor):
     global last_monitor,X,Y,XH,YH,data_c,data_h
-    if monitor == "global":
+    if monitor == "Overview":
         monitor_info = ["monitorme1.ddns.net", "access.log"]
     else:
         monitor_info = monitor.split(';')
