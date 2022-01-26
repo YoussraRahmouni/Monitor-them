@@ -15,8 +15,8 @@ from scripts.script1 import getMonitors
 import numpy
 import json
 
-json_string = getMonitors()
-json_file = json.loads(json_string)
+json_file = getMonitors()
+
 # external JavaScript files
 external_scripts = [
     {
@@ -49,8 +49,8 @@ external_stylesheets = [
         'rel': 'stylesheet'
     }
 ]
-data = getData(getMonitors()[1])
-
+#data = getData(getMonitors()["monitorme1"])
+data = [0,0,[["-","-"]],"-","-",0,0]
 app = dash.Dash(__name__,
                 external_scripts=external_scripts,
                 external_stylesheets=external_stylesheets
