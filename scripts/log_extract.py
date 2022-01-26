@@ -34,6 +34,10 @@ class log_tool:
             error=1
         return error
 
+    def getCPUinfo(self,client):
+        machine_info=self.sshcmd("lscpu",client)
+        return machine_info
+
     def getIPlist(self, machine_name,fichier_log,current_log_data,ip_list):
         if (fichier_log=="access.log"):
             if current_log_data['remote_host'] not in ip_list:
