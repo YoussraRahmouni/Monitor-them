@@ -3,7 +3,7 @@ import apache_log_parser
 from pprint import pprint
 from datetime import datetime, timedelta
 import time
-from log_extract import log_tool
+from scripts.log_extract import log_tool
 import json
 
 json_string = """
@@ -40,15 +40,17 @@ def getMonitors() :
 
 def getStatus(machine_name):
     try :
+        lt=log_tool()
         # test de la connexion ssh
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
         client.connect(machine_name["name"], machine_name["port"], machine_name["username"], machine_name["password"],timeout=10)
+        CPUinfo = lt.getCPUinfo(client)
         client.close()
-        return "Online"
+        return "Online",CPUinfo
     except Exception :
-        return "Offline"
+        return "Offline","-"
 
 def getData(machine_name):
 
@@ -137,4 +139,4 @@ def getData(machine_name):
         return [0,0,[["-","-"]],"Error","Error",0,1]
     
 
-# print(getStatus(json_file["monitorme1.ddns.net"]))
+getStatus(json_file["monitorme1"])
