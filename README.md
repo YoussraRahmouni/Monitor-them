@@ -27,3 +27,6 @@ if [ $? -ne 0 ]; then
 fi`
 
 This will launch pylint test before commiting locally and prevent commiting if code format is not conform
+
+## Presentation
+https://www.canva.com/design/DAE1sWenpB0/share/preview?token=-b1ziPqTFMHBIQnAZ0o1ng&role=EDITOR&utm_content=DAE1sWenpB0&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
