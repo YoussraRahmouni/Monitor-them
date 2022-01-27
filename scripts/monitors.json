@@ -7,14 +7,6 @@
         "username": "interfadm",
         "password": "Projet654!"
     },
-    "monitorme8": {
-        "name": "monitorme1.ddns.net",
-        "log": "access.log",
-        "port": 22,
-        "username": "interfadm",
-        "password": "Projet654!"
-    },
-
     "monitorme2": {
         "name": "monitorme2.ddns.net",
         "log": "other_vhosts_access.log",
