@@ -1,5 +1,5 @@
 # group8
-## Pull Docker Image
+**Pull Docker Image**
 To run the docker image that contains our project, run the following commands :
 `docker login`
 The username is : group8tse
