@@ -1,3 +1,4 @@
+import os
 import paramiko
 import apache_log_parser
 from pprint import pprint
@@ -6,7 +7,8 @@ import time
 from scripts.log_extract import log_tool
 import json
 
-f = open('scripts.monitors.json')
+path = os.getcwd() + 'monitors.json'
+f = open(path,"r")
 
 json_file = json.load(f)
 
