@@ -28,6 +28,7 @@ test-coverage:
   coverage: '/TOTAL.*\s+(\d+\%)/'    
 delivery-job:
   stage: delivery
+  needs: ["test-lint", "test-coverage"]
   image: docker:19.03.12
 
   variables:
