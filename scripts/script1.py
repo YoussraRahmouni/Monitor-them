@@ -7,8 +7,7 @@ import time
 from scripts.log_extract import log_tool
 import json
 
-path = os.getcwd() + 'monitors.json'
-f = open(path,"r")
+f = open("scripts/monitors.json")
 
 json_file = json.load(f)
 
