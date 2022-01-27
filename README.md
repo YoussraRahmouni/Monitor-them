@@ -1,10 +1,16 @@
 # group8
 **Pull Docker Image**
+
 To run the docker image that contains our project, run the following commands :
+
 `docker login`
+
 The username is : group8tse
+
 The password is : group8Interface
+
 `docker pull group8tse/project_image:latest`
+
 `docker run -p 8050:8050 group8tse/project_image:latest`
 
 **Configuring pylint localy**
